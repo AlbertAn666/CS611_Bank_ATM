@@ -3,6 +3,7 @@ package edu.bu.homeworkteam.bankatm.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Map;
 
 /**
  * @author gung
@@ -15,11 +16,18 @@ public class Account {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     int id;
-    boolean balance;
 
+
+    @ElementCollection
+    //@CollectionTable(name = "customer_balances")
+    @MapKeyColumn(name = "currency")
+    @Column(name ="balance")
+    Map<Currency, Float> balances;
 
     @ManyToOne
     Customer customer;
+
+    AccountType accountType;
 }
 
 
