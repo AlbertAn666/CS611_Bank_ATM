@@ -27,8 +27,13 @@ public class Customer {
     if the customer return 200usd to the bank, then the corresponding balance in his account will reduce by 200usd,
     the loan will reduce by 200usd;
      */
-    float loan;
+    @ElementCollection
+    //@CollectionTable(name = "customer_numbers_of_shares")
+    @MapKeyColumn(name = "currency")
+    @Column(name ="loan")
+    Map<Currency, Float> loans;
 
+    //credit
     //mappedBy indicates the corresponding member variable in Account class
     //using the already created relationship table, rather than creating a new one.
     @OneToMany(mappedBy = "customer")
