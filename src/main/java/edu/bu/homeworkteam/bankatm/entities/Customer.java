@@ -1,4 +1,4 @@
-package entities;
+package edu.bu.homeworkteam.bankatm.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
