@@ -21,7 +21,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id; //  auto-generated, unique, unchangeable. e.g. 918233
 
-    Instant instant= Instant.now();
+    Instant instant= Instant.now(); // the creation time
 
     @ManyToOne
     Account fromAccount;
@@ -34,7 +34,7 @@ public class Transaction {
     String note="";
 
     /**
-     * get the String of the formatted time in American Eastern Standard Time
+     * get the String of the formatted creation time in American Eastern Standard Time
      * @return  the formatted time in American Eastern Standard Time
      */
     public String getDateTimeString(){
