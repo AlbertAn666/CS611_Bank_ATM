@@ -8,15 +8,16 @@ import java.util.Map;
 
 /**
  * @author gung
- *
+ * account
  */
 @Entity
 @Data
 public class Account {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id; //  auto-generated, unique, unchangeable. e.g. 918233
+
 
 
     @ElementCollection
@@ -26,9 +27,9 @@ public class Account {
     Map<Currency, Float> balances= new HashMap<>();
 
     @ManyToOne
-    Customer customer;
+    Customer customer; // the owner
 
-    AccountType accountType;
+    AccountType accountType; //
 }
 
 

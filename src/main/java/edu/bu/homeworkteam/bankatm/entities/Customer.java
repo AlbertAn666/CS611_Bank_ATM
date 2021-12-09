@@ -15,9 +15,9 @@ import java.util.Map;
 
 public class Customer {
     @Id
-    @GeneratedValue
-    int id;
-    String name;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id; // auto-generated, unique, unchangeable. e.g. 23442
+    String name; // not always unique. e.g. “Sam”
     String password;
 
     /*

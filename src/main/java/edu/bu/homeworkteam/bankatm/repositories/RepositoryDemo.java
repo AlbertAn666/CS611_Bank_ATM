@@ -1,15 +1,12 @@
 package edu.bu.homeworkteam.bankatm.repositories;
 
 import edu.bu.homeworkteam.bankatm.entities.Customer;
-import edu.bu.homeworkteam.bankatm.repositories.CustomerRepository;
+import edu.bu.homeworkteam.bankatm.entities.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 @Component
@@ -17,11 +14,12 @@ public class RepositoryDemo {
 
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    TransactionRepository transactionRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     //automatically run the method when Spring Application ready
-    public void run(){
-
+    public void runCustomerDemo(){
         /*
           create a new customer with new valid customer ID
          */
@@ -49,6 +47,21 @@ public class RepositoryDemo {
             //if not found
             System.out.println("Unable to find a customer with customer ID "+customerId);
         }
+
+    }
+
+
+    @EventListener(ApplicationReadyEvent.class)
+    //automatically run the method when Spring Application ready
+    public void runTransactionDemo(){
+        /*
+          create a new transaction with valid Id and creation time;
+         */
+        Transaction transaction= transactionRepository.create();
+        System.out.println(transaction.getDateTimeString());
+        System.out.println(transaction.toString());
+
+
 
     }
 }
