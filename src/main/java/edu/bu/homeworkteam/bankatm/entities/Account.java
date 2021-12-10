@@ -18,8 +18,10 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id; //  auto-generated, unique, unchangeable. e.g. 918233
 
-
-
+    /**
+     * if this account type is credit, then the balance is allowed to be negative,
+     * which represents that the customer owes the bank some money.
+     */
     @ElementCollection
     //@CollectionTable(name = "customer_balances")
     @MapKeyColumn(name = "currency")
