@@ -16,7 +16,7 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id; //  auto-generated, unique, unchangeable. e.g. 918233
+    private int id; //  auto-generated, unique, unchangeable. e.g. 918233
 
     /**
      * if this account type is credit, then the balance is allowed to be negative,
@@ -26,12 +26,12 @@ public class Account {
     //@CollectionTable(name = "customer_balances")
     @MapKeyColumn(name = "currency")
     @Column(name ="balance")
-    Map<Currency, Float> balances= new HashMap<>();
+    private Map<Currency, Float> balances= new HashMap<>();
 
     @ManyToOne
-    Customer customer; // the owner
+    private Customer customer; // the owner
 
-    AccountType accountType; //
+    private AccountType accountType; //
 }
 
 

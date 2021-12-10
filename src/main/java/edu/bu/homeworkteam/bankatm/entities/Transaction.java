@@ -19,19 +19,19 @@ import java.util.Locale;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id; //  auto-generated, unique, unchangeable. e.g. 918233
+    private int id; //  auto-generated, unique, unchangeable. e.g. 918233
 
-    Instant instant= Instant.now(); // the creation time
-
-    @ManyToOne
-    Account fromAccount;
+    private Instant instant= Instant.now(); // the creation time
 
     @ManyToOne
-    Account toAccount;
+    private Account fromAccount;
 
-    float amount;
+    @ManyToOne
+    private Account toAccount;
 
-    String note="";
+    private float amount;
+
+    private String note="";
 
     /**
      * get the String of the formatted creation time in American Eastern Standard Time

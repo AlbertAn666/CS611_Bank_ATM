@@ -17,10 +17,10 @@ import javax.persistence.Id;
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id; //  auto-generated, unique, unchangeable. e.g. 918233
+    private int id; //  auto-generated, unique, unchangeable. e.g. 918233
 
-    String symbol; //e.g. AAPL, MSFT
-    String name;//e.g. Apple Inc., Microsoft Corporation
-    Exchange exchange; //e.g. NASDAQ, NYSE, HKEX
-    float price;
+    private String symbol; //e.g. AAPL, MSFT
+    private String name;//e.g. Apple Inc., Microsoft Corporation
+    private Exchange exchange; //e.g. NASDAQ, NYSE, HKEX
+    private float price;
 }
