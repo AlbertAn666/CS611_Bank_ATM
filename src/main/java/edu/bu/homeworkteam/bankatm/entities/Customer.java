@@ -32,7 +32,7 @@ public class Customer {
     if the customer return 200usd to the bank, then the corresponding balance in his account will reduce by 200usd,
     the loan will reduce by 200usd;
      */
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     //@CollectionTable(name = "customer_numbers_of_shares")
     @MapKeyColumn(name = "currency")
     @Column(name ="loan")
@@ -50,10 +50,10 @@ public class Customer {
     update the field in the database with changes from the heap, because in the database level, the association
     is not maintained by this side.
     */
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
     private List<Account> accounts=new ArrayList<>();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     //@CollectionTable(name = "customer_numbers_of_shares")
     @MapKeyJoinColumn(name = "stock_id")
     @Column(name ="number_of_shares")

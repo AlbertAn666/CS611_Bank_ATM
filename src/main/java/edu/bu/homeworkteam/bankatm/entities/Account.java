@@ -22,7 +22,7 @@ public class Account {
      * if this account type is credit, then the balance is allowed to be negative,
      * which represents that the customer owes the bank some money.
      */
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     //@CollectionTable(name = "customer_balances")
     @MapKeyColumn(name = "currency")
     @Column(name ="balance")

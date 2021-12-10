@@ -9,6 +9,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -22,6 +23,8 @@ public class RepositoryDemo {
     AccountRepository accountRepository;
     @Autowired
     StockRepository stockRepository;
+    @Autowired
+    UniversalRepository universalRepository;
     @EventListener(ApplicationReadyEvent.class)
     //automatically run the method when Spring Application ready
     public void runDemo(){
@@ -108,8 +111,16 @@ public class RepositoryDemo {
         System.out.println(transaction.toString());
 
 
+        /**
+         * get a list of transactions by customer id
+         */
 
 
+        List<Transaction> transactionList=transactionRepository.getTransactionsByCustomerId(30);
+        for (Transaction transactionInList :
+                transactionList) {
+            System.out.println("Transaction: "+transactionInList.getId());
+        }
     }
 
 

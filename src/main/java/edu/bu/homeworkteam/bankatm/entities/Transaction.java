@@ -29,7 +29,9 @@ public class Transaction {
     @ManyToOne
     private Account toAccount;
 
+    private Currency currency;
     private float amount;
+    private TransactionType transactionType; //DEPOSIT, WITHDRAW, TRANSFER
 
     private String note="";
 
