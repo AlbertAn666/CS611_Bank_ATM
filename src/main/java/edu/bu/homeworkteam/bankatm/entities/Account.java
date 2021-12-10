@@ -26,7 +26,7 @@ public class Account {
     //@CollectionTable(name = "customer_balances")
     @MapKeyColumn(name = "currency")
     @Column(name ="balance")
-    private Map<Currency, Float> balances= new HashMap<>();
+    private Map<Currency, Float> balances= new HashMap<>(); //key: currency; value: balance;
 
     @ManyToOne
     private Customer customer; // the owner

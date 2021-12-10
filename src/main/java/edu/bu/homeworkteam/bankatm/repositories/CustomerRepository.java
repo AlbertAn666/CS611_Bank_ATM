@@ -18,6 +18,7 @@ public interface CustomerRepository extends CrudRepository<Customer,Integer> {
     /**
      * Create a new customer
      * @return a new empty customer with a valid customer ID
+     * insert into customer (name, password) values (?, ?)
      */
     default Customer create(){
         Customer customer=new Customer();

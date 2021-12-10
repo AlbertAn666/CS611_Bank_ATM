@@ -36,7 +36,7 @@ public class Customer {
     //@CollectionTable(name = "customer_numbers_of_shares")
     @MapKeyColumn(name = "currency")
     @Column(name ="loan")
-    private Map<Currency, Float> loans=new HashMap<>();
+    private Map<Currency, Float> loans=new HashMap<>(); //key: currency; value: loans;
 
     /*
     the value of mappedBy is the name of the association-mapping attribute on the owning side
@@ -57,8 +57,25 @@ public class Customer {
     //@CollectionTable(name = "customer_numbers_of_shares")
     @MapKeyJoinColumn(name = "stock_id")
     @Column(name ="number_of_shares")
-    private Map<Stock, Integer> numbersOfShares= new HashMap<>();
+    private Map<Stock, Integer> numbersOfShares= new HashMap<>(); //key: stock; value: number of shares
 
+
+    /*
+    save(customer) with null id
+    Hibernate: insert into customer (name, password) values (?, ?)
+     */
+    /*
+       save(customer)
+    Hibernate: select customer0_.id as id1_2_0_, customer0_.name as name2_2_0_, customer0_.password as password3_2_0_ from customer customer0_ where customer0_.id=?
+    Hibernate: select loans0_.customer_id as customer1_3_0_, loans0_.loan as loan2_3_0_, loans0_.currency as currency3_0_ from customer_loans loans0_ where loans0_.customer_id=?
+    Hibernate: select numbersofs0_.customer_id as customer1_4_0_, numbersofs0_.number_of_shares as number_o2_4_0_, numbersofs0_.stock_id as stock_id3_0_, stock1_.id as id1_5_1_, stock1_.exchange as exchange2_5_1_, stock1_.name as name3_5_1_, stock1_.price as price4_5_1_, stock1_.symbol as symbol5_5_1_ from customer_numbers_of_shares numbersofs0_ inner join stock stock1_ on numbersofs0_.stock_id=stock1_.id where numbersofs0_.customer_id=?
+    Hibernate: update customer set name=?, password=? where id=?
+    */
+
+    /*
+    findById
+    Hibernate: select customer0_.id as id1_2_0_, customer0_.name as name2_2_0_, customer0_.password as password3_2_0_ from customer customer0_ where customer0_.id=?
+     */
 }
 
 

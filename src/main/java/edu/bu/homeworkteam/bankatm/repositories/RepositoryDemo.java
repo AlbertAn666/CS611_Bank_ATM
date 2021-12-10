@@ -2,6 +2,7 @@ package edu.bu.homeworkteam.bankatm.repositories;
 
 import edu.bu.homeworkteam.bankatm.entities.Account;
 import edu.bu.homeworkteam.bankatm.entities.Customer;
+import edu.bu.homeworkteam.bankatm.entities.Stock;
 import edu.bu.homeworkteam.bankatm.entities.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -19,7 +20,8 @@ public class RepositoryDemo {
     TransactionRepository transactionRepository;
     @Autowired
     AccountRepository accountRepository;
-
+    @Autowired
+    StockRepository stockRepository;
     @EventListener(ApplicationReadyEvent.class)
     //automatically run the method when Spring Application ready
     public void runDemo(){
@@ -52,15 +54,9 @@ public class RepositoryDemo {
         }
 
         /*
-         *
-         * Looking deeper inside the repository.save(entity) method.
-         * Generally, the save() method in Repository interface is a bidirectional update.
-         * The entity entry in the database storage will be updated with changes of the entity object in the memory heap.
-         * Also, the entity object in the memory heap will be updated with changes of the entity entry in the database storage.
-         *
-         * However, it is worth noting that with respect to our project, the OneToMany Customer-Account association relationship
+         * Please note that with respect to our project, the OneToMany Customer-Account association relationship
          * is handled by the Account side, rather than the Customer side. so the when we change the customer.accounts field and save it,
-         * actually nothing wil happen in the database. it's a database-to-heap-only unidirectional update for the customer.accounts field.
+         * actually nothing wil happen in the database.
          *
          * Following are demos.
          * @author gung
@@ -72,8 +68,9 @@ public class RepositoryDemo {
          */
         Account account = accountRepository.create();//create a empty account with Id.
         customer.getAccounts().add(account); // assign the account to the customer created previously through CUSTOMER class
-        customerRepository.save(customer); //update the customer
-        accountRepository.save(account);//update the account
+        customerRepository.save(customer); //update the customer.
+        accountRepository.save(account);//update the account.
+        System.out.println(customer.getAccounts().size());//1
         if(account.getCustomer()==null){
             System.out.println("The account "+account.getId()+" has not assigned to any customer.");//The account 1 has not assigned to any customer.
         }
@@ -86,12 +83,32 @@ public class RepositoryDemo {
         customerRepository.save(customer); //update the customer
         System.out.println("The number of accounts of "+customer.getName()+" is "+customer.getAccounts().size()+"."); //The number of accounts of Sarah is 1.
 
+
+        /**
+         * create two stocks and add them to a customer
+         */
+
+        Stock appleStock= stockRepository.create();
+        appleStock.setName("Apple, Inc.");
+        appleStock.setSymbol("AAPL");
+        Stock microsoftStock=stockRepository.create();
+        microsoftStock.setName("Microsoft Corporation");
+        microsoftStock.setSymbol("MSFT");
+        customer.getNumbersOfShares().put(appleStock,100);
+        customer.getNumbersOfShares().put(microsoftStock,134);
+        customerRepository.save(customer);
+
+
+
         /*
           create a new transaction with valid Id and creation time;
          */
         Transaction transaction= transactionRepository.create();
         System.out.println(transaction.getDateTimeString());
         System.out.println(transaction.toString());
+
+
+
 
     }
 
