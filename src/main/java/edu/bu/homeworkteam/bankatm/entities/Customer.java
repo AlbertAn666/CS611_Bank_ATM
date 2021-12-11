@@ -1,9 +1,6 @@
 package edu.bu.homeworkteam.bankatm.entities;
 
-import edu.bu.homeworkteam.bankatm.repositories.AccountRepository;
-import edu.bu.homeworkteam.bankatm.repositories.CustomerRepository;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -54,10 +51,10 @@ public class Customer {
     private List<Account> accounts=new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
-    //@CollectionTable(name = "customer_numbers_of_shares")
+    @CollectionTable(name = "customer_shareholdings")
     @MapKeyJoinColumn(name = "stock_id")
-    @Column(name ="number_of_shares")
-    private Map<Stock, Integer> numbersOfShares= new HashMap<>(); //key: stock; value: number of shares
+    //@Column(name ="number_of_shares")
+    private Map<Stock, Shareholding> shareholdings = new HashMap<>(); //key: stock; value: shareholding
 
 
     /*

@@ -1,9 +1,6 @@
 package edu.bu.homeworkteam.bankatm.repositories;
 
-import edu.bu.homeworkteam.bankatm.entities.Account;
-import edu.bu.homeworkteam.bankatm.entities.Customer;
-import edu.bu.homeworkteam.bankatm.entities.Stock;
-import edu.bu.homeworkteam.bankatm.entities.Transaction;
+import edu.bu.homeworkteam.bankatm.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -90,16 +87,19 @@ public class RepositoryDemo {
         /**
          * create two stocks and add them to a customer
          */
-
         Stock appleStock= stockRepository.create();
         appleStock.setName("Apple, Inc.");
         appleStock.setSymbol("AAPL");
-        Stock microsoftStock=stockRepository.create();
-        microsoftStock.setName("Microsoft Corporation");
-        microsoftStock.setSymbol("MSFT");
-        customer.getNumbersOfShares().put(appleStock,100);
-        customer.getNumbersOfShares().put(microsoftStock,134);
+        stockRepository.save(appleStock);
+
+        Shareholding appleShareholding =new Shareholding();
+        appleShareholding.setAverageCostPricePerShare(234);
+        appleShareholding.setNumberOfShares(3411);
+
+        customer.getShareholdings().put(appleStock,appleShareholding);
         customerRepository.save(customer);
+
+
 
 
 
@@ -121,6 +121,9 @@ public class RepositoryDemo {
                 transactionList) {
             System.out.println("Transaction: "+transactionInList.getId());
         }
+
+
+
     }
 
 
