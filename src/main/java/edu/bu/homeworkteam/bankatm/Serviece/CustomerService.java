@@ -4,6 +4,7 @@ import edu.bu.homeworkteam.bankatm.entities.*;
 import edu.bu.homeworkteam.bankatm.entities.Currency;
 import edu.bu.homeworkteam.bankatm.repositories.AccountRepository;
 import edu.bu.homeworkteam.bankatm.repositories.CustomerRepository;
+import edu.bu.homeworkteam.bankatm.repositories.LoanRepository;
 import edu.bu.homeworkteam.bankatm.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,8 @@ public class CustomerService {
     AccountRepository accountRepository;
     @Autowired
     TransactionRepository transactionRepository;
+    @Autowired
+    LoanRepository loanRepository;
 
     public int createAccount(Customer customer, AccountType accountType) {
         Account account = accountRepository.create();
@@ -145,9 +148,34 @@ public class CustomerService {
     }
 
 
-    public int requestLoans(int AccountId, float amount) {
+    public int requestLoans(int accountId, float amount) {
         return ServiceConfig.OK;
         // TODO: 12/10/21
+    }
+
+    public int payBackLoan(int loanId, int accountId, float amount) {
+        Optional<Loan> optionalLoan = loanRepository.findById(loanId);
+        if(optionalLoan.isEmpty()) return ServiceConfig.LOAN_ERROR;
+        Loan loan = optionalLoan.get();
+        Currency currency = loan.getCurrency();
+        float loanMoney = loan.getAmount();
+        if(amount > loanMoney) return ServiceConfig.EXCEED_LOANS;
+
+        Optional<Account> optionalAccount = accountRepository.findById(accountId);
+        if(optionalAccount.isEmpty()) return ServiceConfig.ACCOUNT_ERROR;
+        Account account = optionalAccount.get();
+        float currentBalance = account.getBalances().get(currency);
+        if(amount > currentBalance) return ServiceConfig.NOT_ENOUGH_MONEY;
+
+        account.getBalances().put(currency, currentBalance - amount);
+        accountRepository.save(account);
+        loan.setAmount(loan.getAmount() - amount);
+        if(loan.getAmount() == 0) {
+            loanRepository.deleteById(loanId);
+            return ServiceConfig.OK;
+        }
+        loanRepository.save(loan);
+        return ServiceConfig.OK;
     }
 
     public List<Integer> allAccounts(Customer customer) {
@@ -163,16 +191,7 @@ public class CustomerService {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if(optionalAccount.isPresent()) {
             Account account = optionalAccount.get();
-            Map<Currency, Float> balances = account.getBalances();
-            Vector<Vector<String>> ret = new Vector<>();
-            for(Currency currency: balances.keySet()) {
-                Vector<String> temp = new Vector<>();
-                temp.add(getCurrencyType(currency));
-                temp.add(balances.get(currency).toString());
-
-                ret.add(temp);
-            }
-            return ret;
+            return account.getAccountBalances();
         }
         System.out.println("AccountId error");
         return null;
@@ -184,41 +203,10 @@ public class CustomerService {
         // format is like:
         // id, time, type, from, to, currency, amount
         for(Transaction transaction: transactionList) {
-            Vector<String> temp = new Vector<>();
-            temp.add(String.valueOf(transaction.getId()));
-            temp.add(transaction.getDateTimeString());
-            temp.add(getTransactionType(transaction.getTransactionType()));
-            temp.add(String.valueOf(transaction.getFromAccount()));
-            temp.add(String.valueOf(transaction.getToAccount()));
-            temp.add(getCurrencyType(transaction.getCurrency()));
-            temp.add(String.valueOf(transaction.getAmount()));
-
-            ret.add(temp);
+           Vector<String> temp = transaction.getTransaction();
+           ret.add(temp);
         }
         return ret;
     }
 
-    private String getTransactionType(TransactionType transaction) {
-        switch (transaction) {
-            case TRANSFER:
-                return "Transfer";
-            case DEPOSIT:
-                return "Deposit";
-            case WITHDRAW:
-                return "Withdraw";
-            case LOAN:
-                return "Loan";
-        }
-        return "Other";
-    }
-
-    private String getCurrencyType(Currency currency) {
-        switch (currency) {
-            case USD:
-                return "USD";
-            case CNY:
-                return "CNY";
-        }
-        return "EUR";
-    }
 }

@@ -7,6 +7,7 @@ import edu.bu.homeworkteam.bankatm.repositories.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
@@ -93,20 +94,23 @@ public class CustomerStockService extends CustomerService {
         return "NASDAQ";
     }
 
-    public int buyStock() {
-        // TODO: 12/10/21
+    public List<Stock> buyStocksBySymbol(String symbol, int n) {
+        return null;
+        // TODO: 12/11/21  
     }
 
     public int sellStock() {
+        return ServiceConfig.OK;
         // TODO: 12/10/21
     }
 
     public int getOpenPosition() {
-        Optional<Account>
+        return ServiceConfig.OK;
         // TODO: 12/10/21
     }
 
     public int[] getProfit() {
+        return null;
         // TODO: 12/10/21
     }
 }

@@ -6,6 +6,9 @@ import edu.bu.homeworkteam.bankatm.entities.Transaction;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Stock repository
  * @author gung
@@ -22,8 +25,5 @@ public interface StockRepository extends CrudRepository<Stock,Integer> {
         save(stock);
         return stock;
     }
-
-
-
 }
 
