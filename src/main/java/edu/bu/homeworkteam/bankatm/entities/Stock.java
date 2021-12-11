@@ -23,4 +23,5 @@ public class Stock {
     private String name;//e.g. Apple Inc., Microsoft Corporation
     private Exchange exchange; //e.g. NASDAQ, NYSE, HKEX
     private float price;
+    private Currency currency;
 }

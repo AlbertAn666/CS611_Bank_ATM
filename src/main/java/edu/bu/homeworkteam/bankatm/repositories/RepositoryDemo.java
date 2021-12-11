@@ -85,7 +85,7 @@ public class RepositoryDemo {
 
 
         /**
-         * create two stocks and add them to a customer
+         * create a stocks and add it to a customer
          */
         Stock appleStock= stockRepository.create();
         appleStock.setName("Apple, Inc.");
