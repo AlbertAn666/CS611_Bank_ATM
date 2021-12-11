@@ -1,5 +1,8 @@
 package edu.bu.homeworkteam.bankatm.entities;
 
+import edu.bu.homeworkteam.bankatm.repositories.AccountRepository;
+import edu.bu.homeworkteam.bankatm.repositories.CustomerRepository;
+import javafx.util.Pair;
 import lombok.Data;
 
 import javax.persistence.*;
