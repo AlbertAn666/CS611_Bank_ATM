@@ -31,7 +31,9 @@ public class ManagerService {
             if(account.getAccountType() == AccountType.SAVINGS) {
                 Map<Currency, Float> currentBalances = account.getBalances();
                 for (Currency currency : currentBalances.keySet()) {
-                    float balance = currentBalances.get(currency);
+                    float balance = 0;
+                    if(currentBalances.containsKey(currency))
+                        balance = currentBalances.get(currency);
                     if(balance >= 10000)
                         balance += balance * 0.03;
                     currentBalances.put(currency, balance);

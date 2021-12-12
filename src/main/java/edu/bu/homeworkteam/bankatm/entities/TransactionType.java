@@ -5,4 +5,5 @@ public enum TransactionType {
     DEPOSIT,
     WITHDRAW,
     LOAN,
+    EXCHANGE,
 }

@@ -2,10 +2,7 @@ package edu.bu.homeworkteam.bankatm.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  *
@@ -21,7 +18,10 @@ public class Stock {
 
     private String symbol; //e.g. AAPL, MSFT
     private String name;//e.g. Apple Inc., Microsoft Corporation
-    private Exchange exchange; //e.g. NASDAQ, NYSE, HKEX
     private float price;
     private Currency currency;
+    private boolean inMarket; // newly added
+    @ManyToOne
+    private Customer owner;   // newly added
+    private float lastPrice;  // newly added
 }

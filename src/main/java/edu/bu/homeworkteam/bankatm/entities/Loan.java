@@ -1,3 +1,6 @@
+/**
+ * newly added class
+ */
 package edu.bu.homeworkteam.bankatm.entities;
 
 import lombok.Data;

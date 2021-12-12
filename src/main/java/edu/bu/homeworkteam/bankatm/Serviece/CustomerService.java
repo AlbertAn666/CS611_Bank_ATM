@@ -22,12 +22,20 @@ public class CustomerService {
     @Autowired
     LoanRepository loanRepository;
 
-    public int createAccount(Customer customer, AccountType accountType) {
+    public int createAccount(Customer customer, AccountType accountType, float deposit) {
+        if(deposit < ServiceConfig.ACCOUNT_FEE) {
+            System.out.println("Deposit not enough for open an account");
+            return ServiceConfig.NOT_ENOUGH_MONEY;
+        }
         Account account = accountRepository.create();
         account.setCustomer(customer);
+        account.getBalances().put(Currency.USD, deposit - ServiceConfig.ACCOUNT_FEE);
         account.setAccountType(accountType);
         accountRepository.save(account);
         customer.getAccounts().add(account);
+        if(accountType.equals(AccountType.SECURITIES)) {
+            customer.setSecAccount(account);
+        }
         customerRepository.save(customer);
         return account.getId();
     }
@@ -39,7 +47,7 @@ public class CustomerService {
             if(account.getCustomer().getId() != customer.getId()) {
                 return ServiceConfig.ACCOUNT_ERROR;
             }
-            if(account.getBalances().get(Currency.USD) <= 10) {
+            if(account.getBalances().get(Currency.USD) <= ServiceConfig.ACCOUNT_FEE) {
                 return ServiceConfig.NOT_ENOUGH_MONEY;
             }
             accountRepository.deleteById(accountId);
@@ -66,7 +74,9 @@ public class CustomerService {
             newTransaction.setTransactionType(TransactionType.DEPOSIT);
 
             // set the new balance
-            float currentMoney = account.getBalances().get(type);
+            float currentMoney = 0;
+            if(account.getBalances().containsKey(type))
+                currentMoney = account.getBalances().get(type);
             account.getBalances().put(type, value + currentMoney);
             accountRepository.save(account);
             System.out.println("Successfully deposit Money.");
@@ -85,7 +95,9 @@ public class CustomerService {
                 return ServiceConfig.ACCOUNT_ERROR;
             }
 
-            float currentMoney = account.getBalances().get(type);
+            float currentMoney = 0;
+            if(account.getBalances().containsKey(type))
+                currentMoney = account.getBalances().get(type);
             if(currentMoney < value) {
                 System.out.println("Balance is not enough.");
                 return ServiceConfig.NOT_ENOUGH_MONEY;
@@ -120,7 +132,9 @@ public class CustomerService {
                 return ServiceConfig.ACCOUNT_ERROR;
             }
 
-            float currentMoney = account.getBalances().get(type);
+            float currentMoney = 0;
+            if(account.getBalances().containsKey(type))
+                currentMoney = account.getBalances().get(type);
             if(currentMoney < value) {
                 System.out.println("Balance is not enough.");
                 return ServiceConfig.NOT_ENOUGH_MONEY;
@@ -136,7 +150,9 @@ public class CustomerService {
             newTransaction.setTransactionType(TransactionType.TRANSFER);
 
             // set the new balance
-            float currentMoney2 = account2.getBalances().get(type);
+            float currentMoney2 = 0;
+            if(account.getBalances().containsKey(type))
+                currentMoney2 = account2.getBalances().get(type);
             account.getBalances().put(type, currentMoney - value);
             accountRepository.save(account);
             account2.getBalances().put(type, currentMoney2 + value);
@@ -147,8 +163,7 @@ public class CustomerService {
         return ServiceConfig.ACCOUNT_ERROR;
     }
 
-
-    public int requestLoans(int accountId, float amount) {
+    public int requestLoans(int accountId, Currency type, float amount) {
         return ServiceConfig.OK;
         // TODO: 12/10/21
     }
@@ -164,7 +179,9 @@ public class CustomerService {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if(optionalAccount.isEmpty()) return ServiceConfig.ACCOUNT_ERROR;
         Account account = optionalAccount.get();
-        float currentBalance = account.getBalances().get(currency);
+        float currentBalance = 0;
+        if(account.getBalances().containsKey(currency))
+            currentBalance = account.getBalances().get(currency);
         if(amount > currentBalance) return ServiceConfig.NOT_ENOUGH_MONEY;
 
         account.getBalances().put(currency, currentBalance - amount);

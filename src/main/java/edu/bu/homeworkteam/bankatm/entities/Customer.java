@@ -24,6 +24,9 @@ public class Customer {
     private int id; // auto-generated, unique, unchangeable. e.g. 23442
     private String name; // not always unique. e.g. “Sam”
     private String password;
+    private float totalStockProfit;  // newly added
+    @OneToOne
+    private Account secAccount; // newly added
 
     /*
     for example
