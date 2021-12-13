@@ -56,6 +56,9 @@ public class Customer {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
     private List<Account> accounts=new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Collateral> collaterals = new ArrayList<>();
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "customer_shareholdings")
     @MapKeyJoinColumn(name = "stock_id")

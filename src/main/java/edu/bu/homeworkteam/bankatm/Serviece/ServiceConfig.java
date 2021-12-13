@@ -16,6 +16,8 @@ public class ServiceConfig {
     public static final int EXCEED_LOANS = -8;
     public static final int STOCK_ERROR = -9;  // Stock Id Error
     public static final int NOT_ENOUGH_STOCKS = -10; // Not enough stocks for operation
+    public static final int COLLATERAL_ERROR = -11;  // collateral id error
+    public static final int COLLATERAL_LESS_THAN_LOAN = -12;  // after delete a collateral, the value of all collateral is less than loan
 
     public static final float ACCOUNT_FEE = 20;  // Fee for open or delete an account
     public static final float STOCK_REQUIRE = 5000;  // Minimum requirement of saving account for stock
