@@ -2,14 +2,12 @@ package edu.bu.homeworkteam.bankatm.Serviece;
 
 import com.sun.xml.bind.CycleRecoverable;
 import edu.bu.homeworkteam.bankatm.entities.*;
+import edu.bu.homeworkteam.bankatm.entities.Currency;
 import edu.bu.homeworkteam.bankatm.repositories.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Vector;
+import java.util.*;
 
 @Component
 public class CustomerStockService extends CustomerService {
@@ -18,6 +16,10 @@ public class CustomerStockService extends CustomerService {
 
 
     public boolean ableForStock(Customer customer) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        if(optionalCustomer.isEmpty()) return false;
+        customer = optionalCustomer.get();
+
         List<Account> accountList = customer.getAccounts();
         for(Account account: accountList) {
             if(!account.getBalances().containsKey(Currency.USD)) return false;
@@ -30,10 +32,17 @@ public class CustomerStockService extends CustomerService {
     }
 
     public int creatSecAccount(Customer customer, float deposit) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+        customer = optionalCustomer.get();
         return super.createAccount(customer, AccountType.SECURITIES, deposit);
     }
 
     public int transferForStock(int fromAccount, Customer customer, float value) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+        customer = optionalCustomer.get();
+
         Optional<Account> optionalAccount = accountRepository.findById(fromAccount);
         if(value <= 1000) return ServiceConfig.BELOW_LIMIT;
         if(optionalAccount.isEmpty()) {
@@ -52,118 +61,130 @@ public class CustomerStockService extends CustomerService {
     }
 
     public Vector<Vector<String>> showStocksOfCustomer(Customer customer) {
-        List<Stock> allStocks = stockRepository.getStocksOfCustomer(customer);
-        return getStocksInfo(allStocks);
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        if(optionalCustomer.isEmpty()) return null;
+        customer = optionalCustomer.get();
+
+        Vector<Vector<String>> ret = new Vector<>();
+        Map<Stock, Shareholding> stockMap = customer.getShareholdings();
+        for (Stock stock : stockMap.keySet()) {
+            // stock id, symbol, name, price and number of shares
+            Vector<String> temp = new Vector<>();
+            temp.add(String.valueOf(stock.getId()));
+            temp.add(stock.getSymbol());
+            temp.add(stock.getName());
+            temp.add(String.valueOf(stock.getPrice()));
+            temp.add(String.valueOf(stockMap.get(stock).getNumberOfShares()));
+
+            ret.add(temp);
+        }
+      return ret;
     }
 
     public Vector<Vector<String>> showAllStocksInMarket() {
-        List<Stock> allStocks = stockRepository.getAllStocksInMarket();
-        return getStocksInfo(allStocks);
-    }
+        Iterable<Stock> stockIterable = stockRepository.findAll();
 
-    public Vector<Vector<String>> showMarketStocksBySymbol(String symbol) {
-        List<Stock> allStocks = stockRepository.getStocksInMarket(symbol);
-        return getStocksInfo(allStocks);
-    }
+        Vector<Vector<String>> ret = new Vector<>();
 
-    private Vector<Vector<String>> getStocksInfo(List<Stock> allStocks) {
-        Vector<Vector<String>> res = new Vector<>();
-        for(Stock stock: allStocks) {
+        for(Stock stock: stockIterable) {
+            // stock id, symbol, name, price
             Vector<String> temp = new Vector<>();
             temp.add(String.valueOf(stock.getId()));
-            temp.add(stock.getName());
             temp.add(stock.getSymbol());
+            temp.add(stock.getName());
             temp.add(String.valueOf(stock.getPrice()));
 
-            res.add(temp);
+            ret.add(temp);
         }
-        return res;
+        return ret;
     }
 
-    public List<Stock> buyStocksBySymbol(Customer customer, String symbol, int n) {
-        List<Stock> allStocks = stockRepository.getStocksInMarket(symbol);
-        if(n > allStocks.size()) {
-            System.out.println("Not enough stocks for sell.");
-            return null;
-        }
+    public int buyStocksBySymbol(Customer customer, String symbol, int n) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+        customer = optionalCustomer.get();
+
+        Stock stock = stockRepository.getStockBySymbol(symbol);
+        if(stock == null) return ServiceConfig.STOCK_ERROR;
+        float price = stock.getPrice();
+        float totalPrice = n * price;
 
         // change the account money
         Account secAccount = customer.getSecAccount();
         float balance = 0;
         if(secAccount.getBalances().containsKey(Currency.USD))
             balance = secAccount.getBalances().get(Currency.USD);
-        if(balance < n * allStocks.get(0).getPrice()) {
+        if(balance < totalPrice) {
             System.out.println("Securities account not enough money to buy all the stocks");
-            return null;
+            return ServiceConfig.NOT_ENOUGH_MONEY;
         }
-
-        balance -= n * allStocks.get(0).getPrice();
+        balance -= totalPrice;
         secAccount.getBalances().put(Currency.USD, balance);
         accountRepository.save(secAccount);
+        customer.setSecAccount(secAccount);
 
-        List<Stock> stocks = new ArrayList<>();
+        // change the shares and the average price of the customer
+        Map<Stock,Shareholding> stockMap = customer.getShareholdings();
+        for (Stock stock1 : stockMap.keySet()) {
+            if(stock1.getSymbol().equals(symbol)) {
+                int newNumberOfShares = stockMap.get(stock1).getNumberOfShares() + n;
+                float newAveragePrice = (stockMap.get(stock1).getAverageCostPricePerShare() *
+                        stockMap.get(stock1).getNumberOfShares() + totalPrice) / newNumberOfShares;
 
-        for(int i = 0; i < n; i++) {
-            Stock buyingStock = allStocks.get(i);
-
-            // change the stock attributes
-            buyingStock.setInMarket(false);
-            Customer lastOwner = buyingStock.getOwner();
-            buyingStock.setOwner(customer);
-            // if the stock has the last owner, calculate the profit and set its attributes
-            if(lastOwner != null) {
-                float totalProfit = lastOwner.getTotalStockProfit();
-                float profit = buyingStock.getPrice() - buyingStock.getLastPrice();
-                totalProfit += profit;
-                lastOwner.setTotalStockProfit(totalProfit);
-                float beforeBalance = 0;
-                if(lastOwner.getSecAccount().getBalances().containsKey(Currency.USD))
-                    beforeBalance = lastOwner.getSecAccount().getBalances().get(Currency.USD);
-                lastOwner.getSecAccount().getBalances().put(Currency.USD, beforeBalance + profit);
-                customerRepository.save(lastOwner);
+                stockMap.get(stock1).setNumberOfShares(newNumberOfShares);
+                stockMap.get(stock1).setAverageCostPricePerShare(newAveragePrice);
+                customer.setShareholdings(stockMap);
+                break;
             }
-            buyingStock.setLastPrice(buyingStock.getPrice());
-
-            stockRepository.save(buyingStock);
-            stocks.add(buyingStock);
         }
-        return stocks;
-    }
-
-    public int sellStockById(Customer customer, int stockId) {
-        Optional<Stock> optionalStock = stockRepository.findById(stockId);
-        if(optionalStock.isEmpty()) {
-            System.out.println("Stock Id Error.");
-            return ServiceConfig.STOCK_ERROR;
-        }
-        Stock stock = optionalStock.get();
-        if(stock.getOwner().getId() != customer.getId()) {
-            System.out.println("Stock Id Error.");
-            return ServiceConfig.STOCK_ERROR;
-        }
-
-        // change stock attributes
-        stock.setInMarket(true);
-        stockRepository.save(stock);
+        customerRepository.save(customer);
 
         return ServiceConfig.OK;
     }
 
-    public int sellStocksBySymbol(Customer customer, String symbol, int n) {
-        List<Stock> stocks = stockRepository.getStocksOfCustomerAndSymbol(customer, symbol);
-        if(n > stocks.size()) {
-            System.out.println("Not enough stocks");
-            return ServiceConfig.NOT_ENOUGH_STOCKS;
+
+    public int sellStockBySymbol(Customer customer, String symbol, int n) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        if (optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+        customer = optionalCustomer.get();
+        Map<Stock, Shareholding> stockMap = customer.getShareholdings();
+        float averageBuyingPrice = -1;
+        int totalNumberOfStocks = 0;
+        for (Stock stock : stockMap.keySet()) {
+            if (stock.getSymbol().equals(symbol)) {
+                averageBuyingPrice = stockMap.get(stock).getAverageCostPricePerShare();
+                totalNumberOfStocks = stockMap.get(stock).getNumberOfShares();
+                if (totalNumberOfStocks < n) return ServiceConfig.NOT_ENOUGH_STOCKS;
+
+                // set the remaining number of shares
+                int remainingShares = totalNumberOfStocks - n;
+                if (remainingShares == 0) stockMap.remove(stock);
+                else stockMap.get(stock).setNumberOfShares(remainingShares);
+
+                break;
+            }
         }
-        for(int i = 0; i < n; i++) {
-            Stock stock = stocks.get(i);
-            stock.setInMarket(true);
-            stockRepository.save(stock);
+        if (averageBuyingPrice == -1) {
+            return ServiceConfig.STOCK_ERROR;
         }
+
+        Stock stock = stockRepository.getStockBySymbol(symbol);
+        if (stock == null) return ServiceConfig.STOCK_ERROR;
+
+        // calculate profit and add to the total profit
+        float profit = (stock.getPrice() - averageBuyingPrice) * n;
+        customer.setTotalStockProfit(customer.getTotalStockProfit() + profit);
+        customer.setShareholdings(stockMap);
+
+        customerRepository.save(customer);
         return ServiceConfig.OK;
     }
 
     public float getOpenPosition(Customer customer) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        if (optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+        customer = optionalCustomer.get();
+
         if(customer.getSecAccount() != null) {
             if(customer.getSecAccount().getBalances().containsKey(Currency.USD))
                 return customer.getSecAccount().getBalances().get(Currency.USD);
@@ -172,15 +193,28 @@ public class CustomerStockService extends CustomerService {
         return ServiceConfig.NO_SEC_ACCOUNT;
     }
 
-    public float[] getProfit(Customer customer) {
+    public float getRealizedProfit(Customer customer) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        if (optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+        customer = optionalCustomer.get();
+
         // realized profit
-        float realizedProfit = customer.getTotalStockProfit();
-        // unrealized profit
+        return customer.getTotalStockProfit();
+    }
+
+    public float getUnrealizedProfit(Customer customer) {
         float unrealizedProfit = 0;
-        List<Stock> allStock = stockRepository.getStocksOfCustomer(customer);
-        for(Stock stock: allStock) {
-            unrealizedProfit += stock.getPrice() - stock.getLastPrice();
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        if (optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+
+        customer = optionalCustomer.get();
+        Map<Stock, Shareholding> stockMap = customer.getShareholdings();
+
+        for (Stock stock : stockMap.keySet()) {
+            int numberOfShares = stockMap.get(stock).getNumberOfShares();
+            float averageBuyingPrice = stockMap.get(stock).getAverageCostPricePerShare();
+            unrealizedProfit += numberOfShares * (stock.getPrice() - averageBuyingPrice);
         }
-        return new float[]{realizedProfit, unrealizedProfit};
+        return unrealizedProfit;
     }
 }

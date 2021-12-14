@@ -20,8 +20,4 @@ public class Stock {
     private String name;//e.g. Apple Inc., Microsoft Corporation
     private float price;
     private Currency currency;
-    private boolean inMarket; // newly added
-    @ManyToOne
-    private Customer owner;   // newly added
-    private float lastPrice;  // newly added
 }
