@@ -22,10 +22,10 @@ public class CustomerService {
     @Autowired
     CollateralRepository collateralRepository;
 
-    public int createAccount(Customer customer, AccountType accountType, float deposit) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public int createAccount(int customerId, AccountType accountType, float deposit) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         if(deposit < ServiceConfig.ACCOUNT_FEE) {
             System.out.println("Deposit not enough for open an account");
@@ -44,10 +44,10 @@ public class CustomerService {
         return account.getId();
     }
 
-    public int deleteAccount(Customer customer, int accountId) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public int deleteAccount(int customerId, int accountId) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if(optionalAccount.isPresent()) {
@@ -64,10 +64,10 @@ public class CustomerService {
         return ServiceConfig.ACCOUNT_ERROR;
     }
 
-    public int depositMoney(int accountId, Customer customer, Currency type, float value) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public int depositMoney(int accountId, int customerId, Currency type, float value) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if(optionalAccount.isPresent()) {
@@ -100,15 +100,15 @@ public class CustomerService {
         return ServiceConfig.ACCOUNT_ERROR;
     }
 
-    public int withdrawMoney(int accountId, Customer customer, Currency type, float value) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public int withdrawMoney(int accountId, int customerId, Currency type, float value) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if(optionalAccount.isPresent()) {
             Account account = optionalAccount.get();
-            if(account.getCustomer().getId() != customer.getId()) {
+            if(account.getCustomer().getId() != customerId) {
                 System.out.println("Account Id input error.");
                 return ServiceConfig.ACCOUNT_ERROR;
             }
@@ -140,10 +140,10 @@ public class CustomerService {
         return ServiceConfig.ACCOUNT_ERROR;
     }
 
-    public int transferMoney(int fromAccount, int toAccount, Customer customer, Currency type, float value, String note) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public int transferMoney(int fromAccount, int toAccount, int customerId, Currency type, float value, String note) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Optional<Account> optionalAccount1 = accountRepository.findById(fromAccount);
         if(optionalAccount1.isPresent()) {
@@ -189,18 +189,18 @@ public class CustomerService {
         return ServiceConfig.ACCOUNT_ERROR;
     }
 
-    public int requestLoans(Customer customer, int accountId, Currency currency, float amount) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public int requestLoans(int customerId, int accountId, Currency currency, float amount) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if(optionalAccount.isEmpty()) return ServiceConfig.ACCOUNT_ERROR;
         Account account = optionalAccount.get();
-        if(account.getCustomer().getId() != customer.getId()) return ServiceConfig.ACCOUNT_ERROR;
+        if(account.getCustomer().getId() != customerId) return ServiceConfig.ACCOUNT_ERROR;
 
         float currentLoan = customer.getLoans().get(currency);
-        float collateralValue = getCollateralValue(customer, currency);
+        float collateralValue = getCollateralValue(customerId, currency);
         if(amount + currentLoan >= collateralValue) {
             return ServiceConfig.COLLATERAL_LESS_THAN_LOAN;
         }
@@ -223,11 +223,11 @@ public class CustomerService {
         return ServiceConfig.OK;
     }
 
-    public Vector<Vector<String>> showAllCollateral(Customer customer) {
+    public Vector<Vector<String>> showAllCollateral(int customerId) {
         Vector<Vector<String>> ret = new Vector<>();
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return null;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
         List<Collateral> collaterals = customer.getCollaterals();
         for(Collateral collateral: collaterals) {
             Vector<String> temp = new Vector<>();
@@ -239,11 +239,11 @@ public class CustomerService {
         return ret;
     }
 
-    public int addCollateral(Customer customer, String name, float value, Currency currency) {
+    public int addCollateral(int customerId, String name, float value, Currency currency) {
         // set collateral attribute
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
         Collateral collateral = collateralRepository.create();
         collateral.setCustomer(customer);
         collateral.setValue(value);
@@ -256,21 +256,22 @@ public class CustomerService {
         return ServiceConfig.OK;
     }
 
-    public int removeCollateral(Customer customer, int collateralId) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public int removeCollateral(int customerId, int collateralId) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Optional<Collateral> optionalCollateral = collateralRepository.findById(collateralId);
         if(optionalCollateral.isEmpty()) return ServiceConfig.COLLATERAL_ERROR;
         Collateral collateral = optionalCollateral.get();
         if(collateral.getCustomer().getId() != customer.getId()) return ServiceConfig.COLLATERAL_ERROR;
+
         float totalLoan = customer.getLoans().get(collateral.getCurrency());
-        if(getCollateralValue(customer, collateral.getCurrency()) - collateral.getValue() >= totalLoan) {
+        if(getCollateralValue(customerId, collateral.getCurrency()) - collateral.getValue() >= totalLoan) {
             // able to remove
-            int collateralIndex = getCollateralIndex(collateral, customer);
+            int collateralIndex = getCollateralIndex(customerId, collateral);
             if(collateralIndex == ServiceConfig.COLLATERAL_ERROR) return ServiceConfig.COLLATERAL_ERROR;
-            customer.getCollaterals().remove(getCollateralIndex(collateral, customer));
+            customer.getCollaterals().remove(getCollateralIndex(customerId, collateral));
             customerRepository.save(customer);
             collateralRepository.deleteById(collateralIndex);
             return ServiceConfig.OK;
@@ -280,7 +281,11 @@ public class CustomerService {
         }
     }
 
-    private float getCollateralValue(Customer customer, Currency currency) {
+    private float getCollateralValue(int customerId, Currency currency) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+        Customer customer = optionalCustomer.get();
+
         float ret = 0;
         for(Collateral collateral: customer.getCollaterals()) {
             if(collateral.getCurrency() == currency) {
@@ -290,7 +295,11 @@ public class CustomerService {
         return ret;
     }
 
-    private int getCollateralIndex(Collateral collateral, Customer customer) {
+    private int getCollateralIndex(int customerId, Collateral collateral) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+        Customer customer = optionalCustomer.get();
+
         int res = 0;
         for(Collateral allCollateral: customer.getCollaterals()) {
             if(allCollateral.getId() == collateral.getId())
@@ -300,10 +309,10 @@ public class CustomerService {
         return ServiceConfig.COLLATERAL_ERROR;
     }
 
-    public int payBackLoan(Customer customer, int loanId, int accountId, float amount) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public int payBackLoan(int customerId, int loanId, int accountId, float amount) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Optional<Loan> optionalLoan = loanRepository.findById(loanId);
         if(optionalLoan.isEmpty()) return ServiceConfig.LOAN_ERROR;
@@ -315,7 +324,7 @@ public class CustomerService {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if(optionalAccount.isEmpty()) return ServiceConfig.ACCOUNT_ERROR;
         Account account = optionalAccount.get();
-        if(account.getCustomer().getId() != customer.getId())
+        if(account.getCustomer().getId() != customerId)
             return ServiceConfig.ACCOUNT_ERROR;
         float currentBalance = 0;
         if(account.getBalances().containsKey(currency))
@@ -333,10 +342,10 @@ public class CustomerService {
         return ServiceConfig.OK;
     }
 
-    public List<Integer> allAccounts(Customer customer) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public List<Integer> allAccounts(int customerId) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return null;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         List<Account> accounts = customer.getAccounts();
         List<Integer> ret = new ArrayList<>();
@@ -346,10 +355,10 @@ public class CustomerService {
         return ret;
     }
 
-    public Vector<Vector<String>> viewBalances(Customer customer, int accountId) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public Vector<Vector<String>> viewBalances(int customerId, int accountId) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return null;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if(optionalAccount.isPresent()) {
@@ -361,10 +370,10 @@ public class CustomerService {
         return null;
     }
 
-    public Vector<Vector<String>> viewTransactions(Customer customer) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public Vector<Vector<String>> viewTransactions(int customerId) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return null;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Vector<Vector<String>> ret = new Vector<>();
         List<Transaction> transactionList = transactionRepository.getTransactionsByCustomerId(customer.getId());

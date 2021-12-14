@@ -14,11 +14,10 @@ public class CustomerStockService extends CustomerService {
     @Autowired
     StockRepository stockRepository;
 
-
-    public boolean ableForStock(Customer customer) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public boolean ableForStock(int customerId) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return false;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         List<Account> accountList = customer.getAccounts();
         for(Account account: accountList) {
@@ -31,17 +30,14 @@ public class CustomerStockService extends CustomerService {
         return false;
     }
 
-    public int creatSecAccount(Customer customer, float deposit) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
-        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
-        return super.createAccount(customer, AccountType.SECURITIES, deposit);
+    public int creatSecAccount(int customerId, float deposit) {
+        return super.createAccount(customerId, AccountType.SECURITIES, deposit);
     }
 
-    public int transferForStock(int fromAccount, Customer customer, float value) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public int transferForStock(int fromAccount, int customerId, float value) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Optional<Account> optionalAccount = accountRepository.findById(fromAccount);
         if(value <= 1000) return ServiceConfig.BELOW_LIMIT;
@@ -57,13 +53,13 @@ public class CustomerStockService extends CustomerService {
         if(optionalAccount.get().getBalances().containsKey(Currency.USD))
             currentMoney = optionalAccount.get().getBalances().get(Currency.USD);
         if(value >= currentMoney - 2500) return ServiceConfig.NOT_ENOUGH_MONEY;
-        return super.transferMoney(fromAccount, customer.getSecAccount().getId(), customer, Currency.USD, value, "");
+        return super.transferMoney(fromAccount, customer.getSecAccount().getId(), customerId, Currency.USD, value, "");
     }
 
-    public Vector<Vector<String>> showStocksOfCustomer(Customer customer) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public Vector<Vector<String>> showStocksOfCustomer(int customerId) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return null;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Vector<Vector<String>> ret = new Vector<>();
         Map<Stock, Shareholding> stockMap = customer.getShareholdings();
@@ -99,10 +95,10 @@ public class CustomerStockService extends CustomerService {
         return ret;
     }
 
-    public int buyStocksBySymbol(Customer customer, String symbol, int n) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public int buyStocksBySymbol(int customerId, String symbol, int n) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         Stock stock = stockRepository.getStockBySymbol(symbol);
         if(stock == null) return ServiceConfig.STOCK_ERROR;
@@ -143,10 +139,10 @@ public class CustomerStockService extends CustomerService {
     }
 
 
-    public int sellStockBySymbol(Customer customer, String symbol, int n) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public int sellStockBySymbol(int customerId, String symbol, int n) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if (optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
         Map<Stock, Shareholding> stockMap = customer.getShareholdings();
         float averageBuyingPrice = -1;
         int totalNumberOfStocks = 0;
@@ -180,10 +176,10 @@ public class CustomerStockService extends CustomerService {
         return ServiceConfig.OK;
     }
 
-    public float getOpenPosition(Customer customer) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public float getOpenPosition(int customerId) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if (optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         if(customer.getSecAccount() != null) {
             if(customer.getSecAccount().getBalances().containsKey(Currency.USD))
@@ -193,21 +189,21 @@ public class CustomerStockService extends CustomerService {
         return ServiceConfig.NO_SEC_ACCOUNT;
     }
 
-    public float getRealizedProfit(Customer customer) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+    public float getRealizedProfit(int customerId) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if (optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
 
         // realized profit
         return customer.getTotalStockProfit();
     }
 
-    public float getUnrealizedProfit(Customer customer) {
+    public float getUnrealizedProfit(int customerId) {
         float unrealizedProfit = 0;
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if (optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
 
-        customer = optionalCustomer.get();
+        Customer customer = optionalCustomer.get();
         Map<Stock, Shareholding> stockMap = customer.getShareholdings();
 
         for (Stock stock : stockMap.keySet()) {
