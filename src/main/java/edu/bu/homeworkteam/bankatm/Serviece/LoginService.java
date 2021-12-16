@@ -12,9 +12,9 @@ public class LoginService {
     @Autowired
     CustomerRepository customerRepository;
 
-    public int loginCustomer(int userID, String password) {
-        String id = String.valueOf(userID);
-        Optional<Customer> optionalCustomer = customerRepository.findById(userID);
+    public int loginCustomer(int customerId, String password) {
+        String id = String.valueOf(customerId);
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isPresent()) {
             //if found
             Customer customerFound = optionalCustomer.get();

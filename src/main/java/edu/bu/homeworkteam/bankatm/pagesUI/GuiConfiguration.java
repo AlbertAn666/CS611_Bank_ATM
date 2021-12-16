@@ -11,7 +11,7 @@ public class GuiConfiguration {
 
     @Bean
     //automatically run the method when Spring Application ready
-    public JFrame startGui(){
-        return new CustomerLoginFrame();
+    public JFrame createGui(){
+        return new LoginFrame();
     }
 }
