@@ -63,7 +63,7 @@ public class ManagerService {
         return optionalCustomer.get();
     }
 
-    Vector<Vector<String>> checkUpTransactions(int customerId) {
+    public Vector<Vector<String>> checkUpTransactions(int customerId) {
         Vector<Vector<String>> ret = new Vector<>();
         List<Transaction> transactions = transactionRepository.getTransactionsByCustomerId(customerId);
         for(Transaction transaction: transactions) {
@@ -89,11 +89,12 @@ public class ManagerService {
 //        return ret;
 //    }
 
-    Vector<Vector<String>> chekUpCustomerAccounts(int customerId) {
+    public Vector<Vector<String>> checkUpCustomerAccounts(int customerId) {
         Vector<Vector<String>> ret = new Vector<>();
         Customer customer = getCustomer(customerId);
         List<Account> accounts = customer.getAccounts();
 
+        // show as accountId, accountType
         for(Account account: accounts) {
             Vector<String> accountInfo = new Vector<>();
             accountInfo.add(String.valueOf(account.getId()));
@@ -104,7 +105,7 @@ public class ManagerService {
         return ret;
     }
 
-    Vector<Vector<String>> checkUpBalances(int accountId) {
+    public Vector<Vector<String>> checkUpBalances(int accountId) {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if(optionalAccount.isEmpty()) return null;
         Account account = optionalAccount.get();

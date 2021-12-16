@@ -50,11 +50,14 @@ public class Transaction {
 
     public Vector<String> getTransaction() {
         Vector<String> temp = new Vector<>();
+        // id, time, type, from account, source, destination, currency, amount
         temp.add(String.valueOf(this.getId()));
         temp.add(this.getDateTimeString());
         temp.add(EntitiesConfig.getTransactionType(this.getTransactionType()));
-        temp.add(String.valueOf(this.getFromAccount()));
-        temp.add(String.valueOf(this.getToAccount()));
+        if(this.getFromAccount() == null) temp.add(" ");
+        else temp.add(String.valueOf(this.getFromAccount()));
+        if(this.getToAccount() == null) temp.add(" ");
+        else temp.add(String.valueOf(this.getToAccount()));
         temp.add(EntitiesConfig.getCurrencyType(this.getCurrency()));
         temp.add(String.valueOf(this.getAmount()));
         return temp;
