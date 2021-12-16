@@ -17,8 +17,8 @@ public class CustomerService {
     AccountRepository accountRepository;
     @Autowired
     TransactionRepository transactionRepository;
-    @Autowired
-    LoanRepository loanRepository;
+    //@Autowired
+    //LoanRepository loanRepository;
     //@Autowired
     //CollateralRepository collateralRepository;
 
@@ -309,38 +309,38 @@ public class CustomerService {
 //        return ServiceConfig.COLLATERAL_ERROR;
 //    }
 
-    public int payBackLoan(int customerId, int loanId, int accountId, float amount) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
-        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        Customer customer = optionalCustomer.get();
-
-        Optional<Loan> optionalLoan = loanRepository.findById(loanId);
-        if(optionalLoan.isEmpty()) return ServiceConfig.LOAN_ERROR;
-        Loan loan = optionalLoan.get();
-        Currency currency = loan.getCurrency();
-        float loanMoney = loan.getAmount();
-        if(amount > loanMoney) return ServiceConfig.EXCEED_LOANS;
-
-        Optional<Account> optionalAccount = accountRepository.findById(accountId);
-        if(optionalAccount.isEmpty()) return ServiceConfig.ACCOUNT_ERROR;
-        Account account = optionalAccount.get();
-        if(account.getCustomer().getId() != customerId)
-            return ServiceConfig.ACCOUNT_ERROR;
-        float currentBalance = 0;
-        if(account.getBalances().containsKey(currency))
-            currentBalance = account.getBalances().get(currency);
-        if(amount > currentBalance) return ServiceConfig.NOT_ENOUGH_MONEY;
-
-        account.getBalances().put(currency, currentBalance - amount);
-        accountRepository.save(account);
-        loan.setAmount(loan.getAmount() - amount);
-        if(loan.getAmount() == 0) {
-            loanRepository.deleteById(loanId);
-            return ServiceConfig.OK;
-        }
-        loanRepository.save(loan);
-        return ServiceConfig.OK;
-    }
+//    public int payBackLoan(int customerId, int loanId, int accountId, float amount) {
+//        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+//        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+//        Customer customer = optionalCustomer.get();
+//
+//        Optional<Loan> optionalLoan = loanRepository.findById(loanId);
+//        if(optionalLoan.isEmpty()) return ServiceConfig.LOAN_ERROR;
+//        Loan loan = optionalLoan.get();
+//        Currency currency = loan.getCurrency();
+//        float loanMoney = loan.getAmount();
+//        if(amount > loanMoney) return ServiceConfig.EXCEED_LOANS;
+//
+//        Optional<Account> optionalAccount = accountRepository.findById(accountId);
+//        if(optionalAccount.isEmpty()) return ServiceConfig.ACCOUNT_ERROR;
+//        Account account = optionalAccount.get();
+//        if(account.getCustomer().getId() != customerId)
+//            return ServiceConfig.ACCOUNT_ERROR;
+//        float currentBalance = 0;
+//        if(account.getBalances().containsKey(currency))
+//            currentBalance = account.getBalances().get(currency);
+//        if(amount > currentBalance) return ServiceConfig.NOT_ENOUGH_MONEY;
+//
+//        account.getBalances().put(currency, currentBalance - amount);
+//        accountRepository.save(account);
+//        loan.setAmount(loan.getAmount() - amount);
+//        if(loan.getAmount() == 0) {
+//            loanRepository.deleteById(loanId);
+//            return ServiceConfig.OK;
+//        }
+//        loanRepository.save(loan);
+//        return ServiceConfig.OK;
+//    }
 
     public List<Integer> allAccounts(int customerId) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
