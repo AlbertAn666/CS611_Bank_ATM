@@ -13,5 +13,5 @@ import javax.persistence.Embeddable;
 @Data
 public class Shareholding {
     private int numberOfShares;
-    private int averageCostPricePerShare;
+    private float averageCostPricePerShare;
 }

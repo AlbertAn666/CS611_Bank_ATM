@@ -1,5 +1,8 @@
 package edu.bu.homeworkteam.bankatm.entities;
 
+import edu.bu.homeworkteam.bankatm.repositories.AccountRepository;
+import edu.bu.homeworkteam.bankatm.repositories.CustomerRepository;
+import javafx.util.Pair;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,6 +25,9 @@ public class Customer {
     private int id; // auto-generated, unique, unchangeable. e.g. 23442
     private String name; // not always unique. e.g. “Sam”
     private String password;
+    private float totalStockProfit;  // newly added
+    @OneToOne
+    private Account secAccount; // newly added
 
     /*
     for example
@@ -50,6 +56,9 @@ public class Customer {
     */
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
     private List<Account> accounts=new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Collateral> collaterals = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "customer_shareholdings")

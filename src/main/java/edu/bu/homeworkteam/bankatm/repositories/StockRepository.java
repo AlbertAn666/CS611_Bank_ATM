@@ -6,6 +6,9 @@ import edu.bu.homeworkteam.bankatm.entities.Transaction;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Stock repository
  * @author gung
@@ -23,7 +26,20 @@ public interface StockRepository extends CrudRepository<Stock,Integer> {
         return stock;
     }
 
-
+    /**
+     * Get all the stocks of a specific symbol
+     * @param symbol the stocks symbol
+     * @return the list of stocks
+     */
+    default Stock getStockBySymbol(String symbol) {
+        Iterable<Stock> stockIterable = findAll();
+        for(Stock stock: stockIterable) {
+            if(stock.getSymbol().equals(symbol)) {
+                return stock;
+            }
+        }
+        return null;
+    }
 
 }
 

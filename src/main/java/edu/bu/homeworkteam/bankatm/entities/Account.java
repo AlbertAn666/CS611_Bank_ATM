@@ -1,10 +1,12 @@
 package edu.bu.homeworkteam.bankatm.entities;
 
+import edu.bu.homeworkteam.bankatm.Serviece.ServiceConfig;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 /**
  * @author gung
@@ -32,6 +34,20 @@ public class Account {
     private Customer customer; // the owner
 
     private AccountType accountType; //
+
+    public Vector<Vector<String>> getAccountBalances() {
+        Vector<Vector<String>> ret = new Vector<>();
+        Map<Currency, Float> balances = this.getBalances();
+
+        for(Currency currency: balances.keySet()) {
+            Vector<String> temp = new Vector<>();
+            temp.add(EntitiesConfig.getCurrencyType(currency));
+            temp.add(balances.get(currency).toString());
+
+            ret.add(temp);
+        }
+        return ret;
+    }
 }
 
 

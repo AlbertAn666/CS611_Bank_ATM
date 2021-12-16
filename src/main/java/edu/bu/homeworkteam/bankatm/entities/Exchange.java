@@ -5,5 +5,5 @@ package edu.bu.homeworkteam.bankatm.entities;
  * exchange
  */
 public enum Exchange {
-    NYSE, NASDAQ, JPX, LSE, SSE , HKEX, EURONEXT, SZSE
+    NYSE, NASDAQ, JPX /*, LSE, SSE , HKEX, EURONEXT, SZSE*/
 }
