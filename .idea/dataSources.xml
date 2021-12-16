@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://192.168.86.133:3306/bank_atm?serverTimezone=UTC</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="Bank ATM - cloud" uuid="7adbeb8c-2665-4459-8641-0bf688f660fb">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://118.195.173.123:3306/bank_atm?serverTimezone=UTC</jdbc-url>
+    </data-source>
   </component>
 </project>
