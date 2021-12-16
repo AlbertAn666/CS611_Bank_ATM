@@ -12,7 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 
 
-/*
+/**
+ * @author gung
  * UniversalRepository handles complicated data queries
  */
 @Repository

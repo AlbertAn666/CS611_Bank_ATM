@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * a demo for development
+ * @author gung
+ */
 @Component
 public class RepositoryDemo {
 
@@ -84,8 +88,8 @@ public class RepositoryDemo {
         System.out.println("The number of accounts of "+customer.getName()+" is "+customer.getAccounts().size()+"."); //The number of accounts of Sarah is 1.
 
 
-        /**
-         * create a stocks and add it to a customer
+        /*
+         * create a stock and add it to a customer
          */
         Stock appleStock= stockRepository.create();
         appleStock.setName("Apple, Inc.");
@@ -111,7 +115,7 @@ public class RepositoryDemo {
         System.out.println(transaction.toString());
 
 
-        /**
+        /*
          * get a list of transactions by customer id
          */
 

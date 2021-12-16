@@ -4,6 +4,11 @@ import lombok.Data;
 
 import javax.persistence.Embeddable;
 
+/**
+ *
+ * @author gung
+ * shareholding records the holding information with respect to a stock
+ */
 @Embeddable
 @Data
 public class Shareholding {
