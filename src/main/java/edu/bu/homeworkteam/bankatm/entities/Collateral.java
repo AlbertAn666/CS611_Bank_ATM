@@ -1,12 +1,15 @@
+/*
 package edu.bu.homeworkteam.bankatm.entities;
 
 import lombok.Data;
 
 import javax.persistence.*;
 
+*/
 /**
  * newly added class
- */
+ *//*
+
 @Data
 @Entity
 
@@ -19,5 +22,6 @@ public class Collateral {
     private Currency currency;
     private float value;
     @ManyToOne
-    Customer customer;
+    private Customer customer;
 }
+*/

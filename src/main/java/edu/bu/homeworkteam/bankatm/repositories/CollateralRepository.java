@@ -1,3 +1,4 @@
+/*
 package edu.bu.homeworkteam.bankatm.repositories;
 
 import edu.bu.homeworkteam.bankatm.entities.Collateral;
@@ -26,3 +27,4 @@ public interface CollateralRepository extends CrudRepository<Collateral, Integer
         return resultList;
     }
 }
+*/
