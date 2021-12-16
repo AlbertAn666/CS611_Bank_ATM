@@ -44,12 +44,15 @@ public class HomeFrame extends JFrame {
         accountJList.setCellRenderer(new ListCellRenderer<Account>() {
             @Override
             public Component getListCellRendererComponent(JList<? extends Account> jList, Account account, int i, boolean isSelected, boolean b1) {
-                JPanel jPanel =new JPanel();
                 JLabel jLabel=new JLabel();
-                jPanel.add(jLabel);
+                jLabel.setOpaque(true);
                 jLabel.setText(String.valueOf(account.getId()));
-                if(isSelected){
-                    jPanel.setBackground(Color.BLUE);
+                if(!isSelected){
+                    jLabel.setBackground(UIManager.getColor("List.background"));
+                    jLabel.setForeground(UIManager.getColor("List.foreground"));
+                }else{
+                    jLabel.setBackground(UIManager.getColor("List.selectionBackground"));
+                    jLabel.setForeground(UIManager.getColor("List.selectionForeground"));
                 }
                 return jLabel;
             }
