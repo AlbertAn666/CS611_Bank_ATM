@@ -31,9 +31,10 @@ new FormModel {
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "scrollPane2"
 				add( new FormComponent( "javax.swing.JTextArea" ) {
-					name: "textArea1"
+					name: "accountInfoArea"
 					"editable": false
 					"background": new com.jformdesigner.model.SwingColor( "Button.background" )
+					"lineWrap": true
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 270
@@ -56,8 +57,8 @@ new FormModel {
 					name: "accountMenu"
 					"text": "Accounts"
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuItem1"
-						"text": "New account"
+						name: "createAccountMenuItem"
+						"text": "Create account"
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {

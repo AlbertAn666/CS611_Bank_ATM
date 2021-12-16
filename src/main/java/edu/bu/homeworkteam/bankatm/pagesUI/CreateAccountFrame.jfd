@@ -1,0 +1,40 @@
+JFDML JFormDesigner: "7.0.5.0.404" Java: "11.0.4" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) {
+			"autoSize": false
+		} ) {
+			name: "this"
+			"$sizePolicy": 1
+			"visible": true
+			"title": "Create Account"
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "comboBox"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 40
+				"y": 90
+				"width": 315
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label"
+				"text": "Please select your type of account"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 45
+				"y": 60
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button"
+				"text": "Okay"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 245
+				"y": 180
+				"width": 120
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 405, 255 )
+		} )
+	}
+}

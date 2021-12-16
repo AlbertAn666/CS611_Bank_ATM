@@ -6,41 +6,56 @@ package edu.bu.homeworkteam.bankatm.pagesUI;
 
 import edu.bu.homeworkteam.bankatm.entities.Account;
 import edu.bu.homeworkteam.bankatm.entities.Customer;
+import javafx.scene.control.SelectionMode;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Map;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  * @author unknown
  */
 
 public class HomeFrame extends JFrame {
-    private int customerId;
-    private Customer customer;
+    Customer customer;
+    public HomeFrame(){
+        initComponents();
 
 
-    public HomeFrame(int customerId){
 
-        this();
-        this.customerId=customerId;
+        int customerId=GuiManager.getInstance().getLoggedInCustomerId();
+
         System.out.println(customerId);
         customer= GuiManager.getInstance().getCustomerRepository().findById(customerId).get();
         System.out.println(customer.getAccounts().size());
         renderAccountJList();
 
-    }
 
-    private void update(){
 
-    }
+        createAccountMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                new CreateAccountFrame();
+            }
+        });
 
-    private void renderAccountJList(){
-        DefaultListModel<Account> listModel=new DefaultListModel<>();
-        for (Account account:customer.getAccounts()
-             ) {
-            listModel.addElement(account);
-        }
-        accountJList.setModel(listModel);
+
+
+        accountJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        accountJList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                JList jList=(JList)listSelectionEvent.getSource();
+                Account account=(Account)jList.getSelectedValue();
+                System.out.println(account.getId());
+                accountInfoArea.setText(getAccountInformation(account));
+            }
+        });
+
         accountJList.setCellRenderer(new ListCellRenderer<Account>() {
             @Override
             public Component getListCellRendererComponent(JList<? extends Account> jList, Account account, int i, boolean isSelected, boolean b1) {
@@ -60,16 +75,44 @@ public class HomeFrame extends JFrame {
 
     }
 
-    public HomeFrame() {
-        initComponents();
+    private void refresh(){
+
     }
+
+    private void renderAccountJList(){
+
+
+
+        DefaultListModel<Account> listModel=new DefaultListModel<>();
+        for (Account account:customer.getAccounts()
+             ) {
+            listModel.addElement(account);
+        }
+        accountJList.setModel(listModel);
+    }
+
+
+    private String getAccountInformation(Account account){
+        StringBuilder stringBuilder=new StringBuilder();
+        stringBuilder.append("Account ID: ").append(account.getId()).append("\n");
+        stringBuilder.append("Account Type: ").append(account.getAccountType().toString()).append("\n");
+        stringBuilder.append("Balances: \n");
+
+        for (Map.Entry entry :account.getBalances().entrySet()
+                ) {
+            stringBuilder.append("  ").append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        };
+
+        return stringBuilder.toString();
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - unknown
         menuBar = new JMenuBar();
         accountMenu = new JMenu();
-        menuItem1 = new JMenuItem();
+        createAccountMenuItem = new JMenuItem();
         stockMenu = new JMenu();
         menuItem2 = new JMenuItem();
         menuItem3 = new JMenuItem();
@@ -79,10 +122,10 @@ public class HomeFrame extends JFrame {
         customerMenu = new JMenu();
         menuItem6 = new JMenuItem();
         scrollPane1 = new JScrollPane();
-        accountJList = new JList<>();
+        accountJList = new JList();
         accountIdLabel = new JLabel();
         scrollPane2 = new JScrollPane();
-        textArea1 = new JTextArea();
+        accountInfoArea = new JTextArea();
         accountIdLabel2 = new JLabel();
 
         //======== this ========
@@ -97,9 +140,9 @@ public class HomeFrame extends JFrame {
             {
                 accountMenu.setText("Accounts");
 
-                //---- menuItem1 ----
-                menuItem1.setText("New account");
-                accountMenu.add(menuItem1);
+                //---- createAccountMenuItem ----
+                createAccountMenuItem.setText("Create account");
+                accountMenu.add(createAccountMenuItem);
             }
             menuBar.add(accountMenu);
 
@@ -158,10 +201,11 @@ public class HomeFrame extends JFrame {
         //======== scrollPane2 ========
         {
 
-            //---- textArea1 ----
-            textArea1.setEditable(false);
-            textArea1.setBackground(UIManager.getColor("Button.background"));
-            scrollPane2.setViewportView(textArea1);
+            //---- accountInfoArea ----
+            accountInfoArea.setEditable(false);
+            accountInfoArea.setBackground(UIManager.getColor("Button.background"));
+            accountInfoArea.setLineWrap(true);
+            scrollPane2.setViewportView(accountInfoArea);
         }
         contentPane.add(scrollPane2);
         scrollPane2.setBounds(270, 35, 545, 525);
@@ -181,7 +225,7 @@ public class HomeFrame extends JFrame {
     // Generated using JFormDesigner Evaluation license - unknown
     private JMenuBar menuBar;
     private JMenu accountMenu;
-    private JMenuItem menuItem1;
+    private JMenuItem createAccountMenuItem;
     private JMenu stockMenu;
     private JMenuItem menuItem2;
     private JMenuItem menuItem3;
@@ -194,7 +238,7 @@ public class HomeFrame extends JFrame {
     private JList accountJList;
     private JLabel accountIdLabel;
     private JScrollPane scrollPane2;
-    private JTextArea textArea1;
+    private JTextArea accountInfoArea;
     private JLabel accountIdLabel2;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 

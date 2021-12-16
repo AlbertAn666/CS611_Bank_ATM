@@ -15,6 +15,8 @@ public class GuiManager {
     @Autowired
     private LoginService loginService;
 
+    private int loggedInCustomerId;
+
     private static GuiManager guiManager;
     public static GuiManager getInstance(){
         if(guiManager ==null) guiManager =new GuiManager();

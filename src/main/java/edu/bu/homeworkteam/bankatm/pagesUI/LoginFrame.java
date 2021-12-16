@@ -113,7 +113,8 @@ public class LoginFrame extends JFrame {
 
         if(loginResult==ServiceConfig.OK){
             System.out.println("Login successful");
-            new HomeFrame(customerId);
+            GuiManager.getInstance().setLoggedInCustomerId(customerId);
+            new HomeFrame();
             this.setVisible(false);
         }else if(loginResult==ServiceConfig.PASSWORD_ERROR){
             new PromptDialog(this,"Login failed. Please check and try again.");
