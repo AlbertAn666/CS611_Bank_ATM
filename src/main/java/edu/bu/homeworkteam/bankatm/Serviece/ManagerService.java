@@ -4,7 +4,7 @@ import edu.bu.homeworkteam.bankatm.entities.*;
 import edu.bu.homeworkteam.bankatm.entities.Currency;
 import edu.bu.homeworkteam.bankatm.repositories.AccountRepository;
 import edu.bu.homeworkteam.bankatm.repositories.CustomerRepository;
-import edu.bu.homeworkteam.bankatm.repositories.LoanRepository;
+//import edu.bu.homeworkteam.bankatm.repositories.LoanRepository;
 import edu.bu.homeworkteam.bankatm.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,8 +21,8 @@ public class ManagerService {
     AccountRepository accountRepository;
     @Autowired
     TransactionRepository transactionRepository;
-    @Autowired
-    LoanRepository loanRepository;
+    //@Autowired
+    //LoanRepository loanRepository;
 
 
     public int payInterest() {
@@ -47,15 +47,15 @@ public class ManagerService {
         return ServiceConfig.OK;
     }
 
-    public int chargeInterest() {
-        Iterable<Loan> loans = loanRepository.findAll();
-        for(Loan loan: loans) {
-            float currentMoney = loan.getAmount();
-            currentMoney += currentMoney * 0.05;
-            loan.setAmount(currentMoney);
-        }
-        return ServiceConfig.OK;
-    }
+//    public int chargeInterest() {
+//        Iterable<Loan> loans = loanRepository.findAll();
+//        for(Loan loan: loans) {
+//            float currentMoney = loan.getAmount();
+//            currentMoney += currentMoney * 0.05;
+//            loan.setAmount(currentMoney);
+//        }
+//        return ServiceConfig.OK;
+//    }
 
     public Customer getCustomer(int customerId) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
@@ -73,21 +73,21 @@ public class ManagerService {
         return ret;
     }
 
-    Vector<Vector<String>> checkUpLoans(int customerId) {
-        Vector<Vector<String>> ret = new Vector<>();
-        Iterable<Loan> loanIterable = loanRepository.findAll();
-        for(Loan loan: loanIterable) {
-            if(loan.getCustomer().getId() == customerId) {
-                Vector<String> temp = new Vector<>();
-                temp.add(String.valueOf(loan.getId()));
-                temp.add(EntitiesConfig.getCurrencyType(loan.getCurrency()));
-                temp.add(String.valueOf(loan.getAmount()));
-                temp.add(loan.getDataTimeString());
-                ret.add(temp);
-            }
-        }
-        return ret;
-    }
+//    Vector<Vector<String>> checkUpLoans(int customerId) {
+//        Vector<Vector<String>> ret = new Vector<>();
+//        Iterable<Loan> loanIterable = loanRepository.findAll();
+//        for(Loan loan: loanIterable) {
+//            if(loan.getCustomer().getId() == customerId) {
+//                Vector<String> temp = new Vector<>();
+//                temp.add(String.valueOf(loan.getId()));
+//                temp.add(EntitiesConfig.getCurrencyType(loan.getCurrency()));
+//                temp.add(String.valueOf(loan.getAmount()));
+//                temp.add(loan.getDataTimeString());
+//                ret.add(temp);
+//            }
+//        }
+//        return ret;
+//    }
 
     Vector<Vector<String>> chekUpCustomerAccounts(int customerId) {
         Vector<Vector<String>> ret = new Vector<>();
