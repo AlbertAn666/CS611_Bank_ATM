@@ -27,7 +27,7 @@ public class RepositoryDemo {
     StockRepository stockRepository;
     @Autowired
     UniversalRepository universalRepository;
-    @EventListener(ApplicationReadyEvent.class)
+    //@EventListener(ApplicationReadyEvent.class)
     //automatically run the method when Spring Application ready
     public void runDemo(){
         /*
@@ -133,7 +133,7 @@ public class RepositoryDemo {
     }
 
 
-    @EventListener(ApplicationReadyEvent.class)
+    //@EventListener(ApplicationReadyEvent.class)
     //automatically run the method when Spring Application ready
     public void runTransactionDemo(){
         /*

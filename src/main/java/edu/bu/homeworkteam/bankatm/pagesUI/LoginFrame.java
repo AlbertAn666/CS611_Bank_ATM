@@ -4,9 +4,7 @@
 
 package edu.bu.homeworkteam.bankatm.pagesUI;
 
-import edu.bu.homeworkteam.bankatm.Serviece.LoginService;
 import edu.bu.homeworkteam.bankatm.Serviece.ServiceConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,13 +14,12 @@ import javax.swing.*;
 /**
  * @author unknown
  */
+
 public class LoginFrame extends JFrame {
+
     public LoginFrame() {
         initComponents();
     }
-
-    @Autowired
-    LoginService loginService;
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - unknown
@@ -33,7 +30,7 @@ public class LoginFrame extends JFrame {
         customerIdLabel = new JLabel();
         passwordLabel = new JLabel();
         logo = new JLabel();
-        loginResultLabel = new JLabel();
+        loginResult = new JLabel();
 
         //======== this ========
         setTitle("Login");
@@ -74,11 +71,8 @@ public class LoginFrame extends JFrame {
         logo.setIcon(null);
         contentPane.add(logo);
         logo.setBounds(65, 60, 225, 185);
-
-        //---- loginResult ----
-        loginResultLabel.setText("(login error)");
-        contentPane.add(loginResultLabel);
-        loginResultLabel.setBounds(195, 495, 140, loginResultLabel.getPreferredSize().height);
+        contentPane.add(loginResult);
+        loginResult.setBounds(195, 495, 140, loginResult.getPreferredSize().height);
 
         contentPane.setPreferredSize(new Dimension(370, 545));
         setSize(370, 545);
@@ -89,16 +83,7 @@ public class LoginFrame extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                int customerId=Integer.parseInt(customerIdField.getText());
-                String password=String.valueOf(passwordField.getPassword());
-
-
-                int loginResult=loginService.loginCustomer(customerId,password);
-                if(loginResult==ServiceConfig.OK){
-                    System.out.println("hasdfsdf");
-                }else if(loginResult==ServiceConfig.PASSWORD_ERROR){
-                    new JDialog().setContentPane(new JLabel("Failed to login. Please check and try again."));
-                }
+                login();
             }
         });
 
@@ -114,10 +99,24 @@ public class LoginFrame extends JFrame {
     private JLabel customerIdLabel;
     private JLabel passwordLabel;
     private JLabel logo;
-    private JLabel loginResultLabel;
+    private JLabel loginResult;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     public static void main(String[] args) {
         new LoginFrame();
+    }
+
+    public void login(){
+        int customerId=Integer.parseInt(customerIdField.getText());
+        String password=String.valueOf(passwordField.getPassword());
+        int loginResult= GuiManager.getInstance().getLoginService().loginCustomer(customerId,password);
+
+        if(loginResult==ServiceConfig.OK){
+            System.out.println("Login successful");
+            new HomeFrame(customerId);
+            this.setVisible(false);
+        }else if(loginResult==ServiceConfig.PASSWORD_ERROR){
+            new PromptDialog(this,"Login failed. Please check and try again.");
+        }
     }
 }

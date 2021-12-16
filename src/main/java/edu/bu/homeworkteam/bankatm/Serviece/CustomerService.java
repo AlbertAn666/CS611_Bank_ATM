@@ -5,11 +5,12 @@ import edu.bu.homeworkteam.bankatm.entities.Currency;
 import edu.bu.homeworkteam.bankatm.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.*;
 
-@Component
+@Service
 public class CustomerService {
     @Autowired
     CustomerRepository customerRepository;
@@ -22,27 +23,27 @@ public class CustomerService {
     //@Autowired
     //CollateralRepository collateralRepository;
 
-    public int createAccount(int customerId, AccountType accountType, float deposit) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
-        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        Customer customer = optionalCustomer.get();
-
-        if(deposit < ServiceConfig.ACCOUNT_FEE) {
-            System.out.println("Deposit not enough for open an account");
-            return ServiceConfig.NOT_ENOUGH_MONEY;
-        }
-        Account account = accountRepository.create();
-        account.setCustomer(customer);
-        account.getBalances().put(Currency.USD, deposit - ServiceConfig.ACCOUNT_FEE);
-        account.setAccountType(accountType);
-        accountRepository.save(account);
-        customer.getAccounts().add(account);
-        if(accountType.equals(AccountType.SECURITIES)) {
-            customer.setSecAccount(account);
-        }
-        customerRepository.save(customer);
-        return account.getId();
-    }
+//    public int createAccount(int customerId, AccountType accountType, float deposit) {
+//        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+//        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+//        Customer customer = optionalCustomer.get();
+//
+//        if(deposit < ServiceConfig.ACCOUNT_FEE) {
+//            System.out.println("Deposit not enough for open an account");
+//            return ServiceConfig.NOT_ENOUGH_MONEY;
+//        }
+//        Account account = accountRepository.create();
+//        account.setCustomer(customer);
+//        account.getBalances().put(Currency.USD, deposit - ServiceConfig.ACCOUNT_FEE);
+//        account.setAccountType(accountType);
+//        accountRepository.save(account);
+//        customer.getAccounts().add(account);
+//        if(accountType.equals(AccountType.SECURITIES)) {
+//            customer.setSecAccount(account);
+//        }
+//        customerRepository.save(customer);
+//        return account.getId();
+//    }
 
     public int deleteAccount(int customerId, int accountId) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);

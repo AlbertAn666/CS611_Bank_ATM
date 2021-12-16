@@ -3,6 +3,7 @@ package edu.bu.homeworkteam.bankatm.repositories;
 import edu.bu.homeworkteam.bankatm.entities.Account;
 import edu.bu.homeworkteam.bankatm.entities.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.repository.CrudRepository;
 
@@ -12,7 +13,7 @@ import javax.persistence.Transient;
  * Customer repository
  * @author gung
  */
-@Repository
+@Component
 public interface CustomerRepository extends CrudRepository<Customer,Integer> {
 
     /**

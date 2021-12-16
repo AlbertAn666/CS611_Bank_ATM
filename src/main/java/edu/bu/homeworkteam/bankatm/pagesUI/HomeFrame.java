@@ -4,13 +4,59 @@
 
 package edu.bu.homeworkteam.bankatm.pagesUI;
 
+import edu.bu.homeworkteam.bankatm.entities.Account;
+import edu.bu.homeworkteam.bankatm.entities.Customer;
+
 import java.awt.*;
 import javax.swing.*;
 
 /**
  * @author unknown
  */
+
 public class HomeFrame extends JFrame {
+    private int customerId;
+    private Customer customer;
+
+
+    public HomeFrame(int customerId){
+
+        this();
+        this.customerId=customerId;
+        System.out.println(customerId);
+        customer= GuiManager.getInstance().getCustomerRepository().findById(customerId).get();
+        System.out.println(customer.getAccounts().size());
+        renderAccountJList();
+
+    }
+
+    private void update(){
+
+    }
+
+    private void renderAccountJList(){
+        DefaultListModel<Account> listModel=new DefaultListModel<>();
+        for (Account account:customer.getAccounts()
+             ) {
+            listModel.addElement(account);
+        }
+        accountJList.setModel(listModel);
+        accountJList.setCellRenderer(new ListCellRenderer<Account>() {
+            @Override
+            public Component getListCellRendererComponent(JList<? extends Account> jList, Account account, int i, boolean isSelected, boolean b1) {
+                JPanel jPanel =new JPanel();
+                JLabel jLabel=new JLabel();
+                jPanel.add(jLabel);
+                jLabel.setText(String.valueOf(account.getId()));
+                if(isSelected){
+                    jPanel.setBackground(Color.BLUE);
+                }
+                return jLabel;
+            }
+        });
+
+    }
+
     public HomeFrame() {
         initComponents();
     }
@@ -19,18 +65,18 @@ public class HomeFrame extends JFrame {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - unknown
         menuBar = new JMenuBar();
-        menu1 = new JMenu();
+        accountMenu = new JMenu();
         menuItem1 = new JMenuItem();
-        menu2 = new JMenu();
+        stockMenu = new JMenu();
         menuItem2 = new JMenuItem();
         menuItem3 = new JMenuItem();
         menuItem4 = new JMenuItem();
         menuItem5 = new JMenuItem();
-        menu3 = new JMenu();
-        menu4 = new JMenu();
+        loanMenu = new JMenu();
+        customerMenu = new JMenu();
         menuItem6 = new JMenuItem();
         scrollPane1 = new JScrollPane();
-        accountList = new JList();
+        accountJList = new JList<>();
         accountIdLabel = new JLabel();
         scrollPane2 = new JScrollPane();
         textArea1 = new JTextArea();
@@ -44,59 +90,59 @@ public class HomeFrame extends JFrame {
         //======== menuBar ========
         {
 
-            //======== menu1 ========
+            //======== accountMenu ========
             {
-                menu1.setText("Accounts");
+                accountMenu.setText("Accounts");
 
                 //---- menuItem1 ----
                 menuItem1.setText("New account");
-                menu1.add(menuItem1);
+                accountMenu.add(menuItem1);
             }
-            menuBar.add(menu1);
+            menuBar.add(accountMenu);
 
-            //======== menu2 ========
+            //======== stockMenu ========
             {
-                menu2.setText("Stocks");
+                stockMenu.setText("Stocks");
 
                 //---- menuItem2 ----
                 menuItem2.setText("View my stocks");
-                menu2.add(menuItem2);
+                stockMenu.add(menuItem2);
 
                 //---- menuItem3 ----
                 menuItem3.setText("View stocks in markets");
-                menu2.add(menuItem3);
+                stockMenu.add(menuItem3);
 
                 //---- menuItem4 ----
                 menuItem4.setText("Sell my stock");
-                menu2.add(menuItem4);
+                stockMenu.add(menuItem4);
 
                 //---- menuItem5 ----
                 menuItem5.setText("Buy my stock");
-                menu2.add(menuItem5);
+                stockMenu.add(menuItem5);
             }
-            menuBar.add(menu2);
+            menuBar.add(stockMenu);
 
-            //======== menu3 ========
+            //======== loanMenu ========
             {
-                menu3.setText("Loans");
+                loanMenu.setText("Loans");
             }
-            menuBar.add(menu3);
+            menuBar.add(loanMenu);
 
-            //======== menu4 ========
+            //======== customerMenu ========
             {
-                menu4.setText("Customer");
+                customerMenu.setText("Customer");
 
                 //---- menuItem6 ----
                 menuItem6.setText("Logout");
-                menu4.add(menuItem6);
+                customerMenu.add(menuItem6);
             }
-            menuBar.add(menu4);
+            menuBar.add(customerMenu);
         }
         setJMenuBar(menuBar);
 
         //======== scrollPane1 ========
         {
-            scrollPane1.setViewportView(accountList);
+            scrollPane1.setViewportView(accountJList);
         }
         contentPane.add(scrollPane1);
         scrollPane1.setBounds(15, 35, 235, 530);
@@ -131,18 +177,18 @@ public class HomeFrame extends JFrame {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     // Generated using JFormDesigner Evaluation license - unknown
     private JMenuBar menuBar;
-    private JMenu menu1;
+    private JMenu accountMenu;
     private JMenuItem menuItem1;
-    private JMenu menu2;
+    private JMenu stockMenu;
     private JMenuItem menuItem2;
     private JMenuItem menuItem3;
     private JMenuItem menuItem4;
     private JMenuItem menuItem5;
-    private JMenu menu3;
-    private JMenu menu4;
+    private JMenu loanMenu;
+    private JMenu customerMenu;
     private JMenuItem menuItem6;
     private JScrollPane scrollPane1;
-    private JList accountList;
+    private JList accountJList;
     private JLabel accountIdLabel;
     private JScrollPane scrollPane2;
     private JTextArea textArea1;
