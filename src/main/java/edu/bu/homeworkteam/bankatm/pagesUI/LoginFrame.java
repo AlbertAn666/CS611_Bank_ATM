@@ -146,16 +146,21 @@ public class LoginFrame extends JFrame {
                 new PromptFrame("Login failed. Please check and try again.");
             }
         } else {
-            int customerId = Integer.parseInt(customerIdField.getText());
-            int loginResult = GuiManager.getInstance().getLoginService().loginCustomer(customerId, password);
+            try {
+                int customerId = Integer.parseInt(customerIdField.getText());
+                int loginResult = GuiManager.getInstance().getLoginService().loginCustomer(customerId, password);
 
-            if (loginResult == ServiceConfig.OK) {
-                System.out.println("Login successful");
-                GuiManager.getInstance().setLoggedInCustomerId(customerId);
-                new HomeFrame();
-                this.setVisible(false);
-            } else if (loginResult == ServiceConfig.PASSWORD_ERROR) {
-                new PromptFrame( "Login failed. Please check and try again.");
+                if (loginResult == ServiceConfig.OK) {
+                    System.out.println("Login successful");
+                    GuiManager.getInstance().setLoggedInCustomerId(customerId);
+                    new HomeFrame();
+                    this.setVisible(false);
+                } else if (loginResult == ServiceConfig.PASSWORD_ERROR) {
+                    new PromptFrame("Login failed. Please check and try again.");
+
+                }
+            }catch (Exception e){
+                new PromptFrame("Login failed. Please check and try again.");
             }
         }
     }

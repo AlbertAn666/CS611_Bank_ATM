@@ -44,7 +44,6 @@ public class Customer {
 //    @MapKeyColumn(name = "currency")
 //    @Column(name ="loan")
 //    private Map<Currency, Float> loans=new HashMap<>(); //key: currency; value: loans;
-    private float loan=0;
 
     /*
     the value of mappedBy is the name of the association-mapping attribute on the owning side
