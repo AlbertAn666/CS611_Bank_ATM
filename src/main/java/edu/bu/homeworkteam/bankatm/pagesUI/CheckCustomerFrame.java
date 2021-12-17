@@ -16,16 +16,15 @@ public class CheckCustomerFrame extends JFrame {
 
     public CheckCustomerFrame() {
         managerService = new ManagerService();
-        setLocation(1500, 400);
-        setSize(900, 1100);
+        setSize(900, 800);
         add(panel);
         panel.setLayout(null);
 
-        label.setBounds(300, 250, 80, 25);
+        label.setBounds(200, 250, 200, 25);
         panel.add(label);
         textField.setBounds(400, 250, 200, 25);
         panel.add(textField);
-        confirmButton.setBounds(350, 350, 100, 25);
+        confirmButton.setBounds(400, 350, 100, 25);
         panel.add(confirmButton);
 
         confirmButton.addActionListener(new ActionListener() {
@@ -33,8 +32,13 @@ public class CheckCustomerFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int customerId = Integer.parseInt(textField.getText());
                 Vector<Vector<String>> customerAccounts = managerService.checkUpCustomerAccounts(customerId);
-                CustomerAccountsFrame customerAccountsFrame = new CustomerAccountsFrame(customerAccounts, customerId);
-                customerAccountsFrame.setVisible(true);
+                if(customerAccounts.size() == 0) {
+                    JOptionPane.showMessageDialog(null, "Customer has no accounts",
+                            "ERROR",JOptionPane.PLAIN_MESSAGE);
+                } else {
+                    CustomerAccountsFrame customerAccountsFrame = new CustomerAccountsFrame(customerAccounts, customerId);
+                    customerAccountsFrame.setVisible(true);
+                }
             }
         });
     }

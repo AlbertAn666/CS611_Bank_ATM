@@ -19,7 +19,6 @@ public class AddStockFrame extends JFrame {
 
     public AddStockFrame() {
         managerStockService = new ManagerStockService();
-        setLocation(1500, 400);
         setSize(900, 1100);
         panel.setLayout(null);
         label1.setBounds(300, 400, 80, 25);
@@ -45,7 +44,7 @@ public class AddStockFrame extends JFrame {
                             "Error",JOptionPane.PLAIN_MESSAGE);
                 }
                 float price = Float.parseFloat(priceTextField.getText());
-                managerStockService.addStock(sym, name, price);
+                GuiManager.getInstance().getManagerStockService().addStock(sym, name, price);
                 JOptionPane.showMessageDialog(null, "Successfully added",
                         "Success",JOptionPane.PLAIN_MESSAGE);
             }

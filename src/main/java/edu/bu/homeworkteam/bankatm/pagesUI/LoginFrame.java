@@ -4,11 +4,15 @@
 
 package edu.bu.homeworkteam.bankatm.pagesUI;
 
+import edu.bu.homeworkteam.bankatm.Serviece.LoginService;
 import edu.bu.homeworkteam.bankatm.Serviece.ServiceConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 
 /**
@@ -87,6 +91,13 @@ public class LoginFrame extends JFrame {
             }
         });
 
+        signUpLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                System.out.println("111");
+            }
+        });
+
 
     }
 
@@ -107,17 +118,26 @@ public class LoginFrame extends JFrame {
     }
 
     public void login(){
-        int customerId=Integer.parseInt(customerIdField.getText());
+        String userId = customerIdField.getText();
         String password=String.valueOf(passwordField.getPassword());
-        int loginResult= GuiManager.getInstance().getLoginService().loginCustomer(customerId,password);
+        if(userId.equals("admin")) {
+            if(password.equals("adminpassword")) {
+                new ManagerMenuFrame();
+            } else {
+                new PromptDialog(this,"Login failed. Please check and try again.");
+            }
+        } else {
+            int customerId = Integer.parseInt(customerIdField.getText());
+            int loginResult = GuiManager.getInstance().getLoginService().loginCustomer(customerId, password);
 
-        if(loginResult==ServiceConfig.OK){
-            System.out.println("Login successful");
-            GuiManager.getInstance().setLoggedInCustomerId(customerId);
-            new HomeFrame();
-            this.setVisible(false);
-        }else if(loginResult==ServiceConfig.PASSWORD_ERROR){
-            new PromptDialog(this,"Login failed. Please check and try again.");
+            if (loginResult == ServiceConfig.OK) {
+                System.out.println("Login successful");
+                GuiManager.getInstance().setLoggedInCustomerId(customerId);
+                new HomeFrame();
+                this.setVisible(false);
+            } else if (loginResult == ServiceConfig.PASSWORD_ERROR) {
+                new PromptDialog(this, "Login failed. Please check and try again.");
+            }
         }
     }
 }

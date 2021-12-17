@@ -14,21 +14,19 @@ public class ManagerMenuFrame extends JFrame {
     JButton payInterestButton = new JButton("Pay Interest");
     JButton chargeInterestButton = new JButton("Charge Interest");
     JButton stockMarketButton = new JButton("Stock Market");
-    ManagerService managerService;
 
     public ManagerMenuFrame() {
-        managerService = new ManagerService();
 
-        setSize(900, 1100);
+        setSize(900, 800);
         setLocation(1500, 400);
         add(jp);
         jp.setLayout(null);
 
-        checkCustomerButton.setBounds(250, 250, 400, 100);
-        getTransactionButton.setBounds(250, 375, 400, 100);
-        payInterestButton.setBounds(250, 500, 400, 100);
-        chargeInterestButton.setBounds(250, 625, 400, 100);
-        stockMarketButton.setBounds(250, 750, 400, 100);
+        checkCustomerButton.setBounds(250, 150, 400, 50);
+        getTransactionButton.setBounds(250, 250, 400, 50);
+        payInterestButton.setBounds(250, 350, 400, 50);
+        chargeInterestButton.setBounds(250, 450, 400, 50);
+        stockMarketButton.setBounds(250, 550, 400, 50);
         jp.add(checkCustomerButton);
         jp.add(getTransactionButton);
         jp.add(payInterestButton);
@@ -48,7 +46,7 @@ public class ManagerMenuFrame extends JFrame {
         getTransactionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Vector<Vector<String>> data = managerService.checkUpTodayTransactions();
+                Vector<Vector<String>> data = GuiManager.getInstance().getManagerService().checkUpTodayTransactions();
                 ShowTransactionFrame showTransactionFrame = new ShowTransactionFrame(data);
                 showTransactionFrame.setVisible(true);
             }
@@ -57,7 +55,7 @@ public class ManagerMenuFrame extends JFrame {
         payInterestButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                managerService.payInterest();
+                GuiManager.getInstance().getManagerService().payInterest();
                 JOptionPane.showMessageDialog(null, "Successfully pay interest",
                         "Success",JOptionPane.PLAIN_MESSAGE);
             }
