@@ -97,7 +97,7 @@ new FormModel {
 					name: "loanMenu"
 					"text": "Loans"
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuItem1"
+						name: "viewCollateralMenuItem"
 						"text": "View collateral"
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
@@ -110,10 +110,18 @@ new FormModel {
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "menu1"
+					"text": "Transactions"
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "viewTransactionsMenuItem"
+						"text": "View transactions"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "customerMenu"
 					"text": "Customer"
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuItem6"
+						name: "logOutMeneItem"
 						"text": "Logout"
 					} )
 				} )

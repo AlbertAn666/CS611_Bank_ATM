@@ -1,10 +1,8 @@
 package edu.bu.homeworkteam.bankatm.pagesUI;
 
 import edu.bu.homeworkteam.bankatm.Serviece.*;
-import edu.bu.homeworkteam.bankatm.repositories.AccountRepository;
-import edu.bu.homeworkteam.bankatm.repositories.CustomerRepository;
-import edu.bu.homeworkteam.bankatm.repositories.StockRepository;
-import edu.bu.homeworkteam.bankatm.repositories.TransactionRepository;
+import edu.bu.homeworkteam.bankatm.entities.Collateral;
+import edu.bu.homeworkteam.bankatm.repositories.*;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class GuiManager {
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private CollateralRepository collateralRepository;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired

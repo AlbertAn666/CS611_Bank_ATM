@@ -24,6 +24,19 @@ public class HomeFrame extends JFrame {
     Customer customer;
     public HomeFrame(){
         initComponents();
+        refresh();
+
+
+        customerMenu.setText("Hi, "+customer.getName());
+
+        logOutMeneItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                new LoginFrame();
+                GuiManager.getInstance().setLoggedInCustomerId(-1);
+                dispose();
+            }
+        });
 
 //        sellStockMenuItem.addActionListener(new ActionListener() {
 //            @Override
@@ -38,6 +51,15 @@ public class HomeFrame extends JFrame {
 //                new BuyStockFrame();
 //            }
 //        });
+
+        viewTransactionsMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                openViewTransactionsFrame();
+            }
+        });
+
+
 
         refreshMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -81,6 +103,13 @@ public class HomeFrame extends JFrame {
             }
         });
 
+        viewCollateralMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                openViewCollateralFrame();
+            }
+        });
+
         accountJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         accountJList.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -109,7 +138,7 @@ public class HomeFrame extends JFrame {
                 return jLabel;
             }
         });
-        refresh();
+
     }
 
 
@@ -118,6 +147,9 @@ public class HomeFrame extends JFrame {
     }
     private void openTransferFrame(){
         new TransferFrame().setHomeFrame(this);
+    }
+    private void openViewTransactionsFrame(){
+        new ViewTransactionsFrame();
     }
 
     private void openDepositFrame(){
@@ -130,6 +162,9 @@ public class HomeFrame extends JFrame {
 
     private void openWithdrawFrame(){
         new WithdrawFrame().setHomeFrame(this);
+    }
+    private void openViewCollateralFrame(){
+        new ViewCollateralFrame();
     }
 
     public void refresh(){
@@ -177,11 +212,13 @@ public class HomeFrame extends JFrame {
         sellStockMenuItem = new JMenuItem();
         buyStockMenuItem = new JMenuItem();
         loanMenu = new JMenu();
-        menuItem1 = new JMenuItem();
+        viewCollateralMenuItem = new JMenuItem();
         menuItem2 = new JMenuItem();
         menuItem3 = new JMenuItem();
+        menu1 = new JMenu();
+        viewTransactionsMenuItem = new JMenuItem();
         customerMenu = new JMenu();
-        menuItem6 = new JMenuItem();
+        logOutMeneItem = new JMenuItem();
         scrollPane1 = new JScrollPane();
         accountJList = new JList();
         accountIdLabel = new JLabel();
@@ -245,9 +282,9 @@ public class HomeFrame extends JFrame {
             {
                 loanMenu.setText("Loans");
 
-                //---- menuItem1 ----
-                menuItem1.setText("View collateral");
-                loanMenu.add(menuItem1);
+                //---- viewCollateralMenuItem ----
+                viewCollateralMenuItem.setText("View collateral");
+                loanMenu.add(viewCollateralMenuItem);
 
                 //---- menuItem2 ----
                 menuItem2.setText("Borrow loan");
@@ -259,13 +296,23 @@ public class HomeFrame extends JFrame {
             }
             menuBar.add(loanMenu);
 
+            //======== menu1 ========
+            {
+                menu1.setText("Transactions");
+
+                //---- viewTransactionsMenuItem ----
+                viewTransactionsMenuItem.setText("View transactions");
+                menu1.add(viewTransactionsMenuItem);
+            }
+            menuBar.add(menu1);
+
             //======== customerMenu ========
             {
                 customerMenu.setText("Customer");
 
-                //---- menuItem6 ----
-                menuItem6.setText("Logout");
-                customerMenu.add(menuItem6);
+                //---- logOutMeneItem ----
+                logOutMeneItem.setText("Logout");
+                customerMenu.add(logOutMeneItem);
             }
             menuBar.add(customerMenu);
         }
@@ -320,11 +367,13 @@ public class HomeFrame extends JFrame {
     private JMenuItem sellStockMenuItem;
     private JMenuItem buyStockMenuItem;
     private JMenu loanMenu;
-    private JMenuItem menuItem1;
+    private JMenuItem viewCollateralMenuItem;
     private JMenuItem menuItem2;
     private JMenuItem menuItem3;
+    private JMenu menu1;
+    private JMenuItem viewTransactionsMenuItem;
     private JMenu customerMenu;
-    private JMenuItem menuItem6;
+    private JMenuItem logOutMeneItem;
     private JScrollPane scrollPane1;
     private JList accountJList;
     private JLabel accountIdLabel;

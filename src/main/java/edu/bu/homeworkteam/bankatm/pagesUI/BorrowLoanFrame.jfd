@@ -6,8 +6,9 @@ new FormModel {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
 			name: "this"
 			"title": "Borrow Loan"
+			"visible": true
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField1"
+				name: "nameField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 125
 				"y": 85
@@ -25,15 +26,15 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label2"
-				"text": "Loan amount"
+				"text": "value"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"width": 85
+				"width": 55
 				"height": 30
-				"x": 30
+				"x": 45
 				"y": 180
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField2"
+				name: "valueField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"width": 155
 				"height": 30
@@ -50,7 +51,7 @@ new FormModel {
 				"y": 130
 			} )
 			add( new FormComponent( "javax.swing.JComboBox" ) {
-				name: "comboBox1"
+				name: "currencyComboBox"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 125
 				"y": 135
@@ -66,7 +67,7 @@ new FormModel {
 				"y": 230
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField3"
+				name: "accountIdField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"width": 155
 				"height": 30
@@ -74,7 +75,7 @@ new FormModel {
 				"y": 230
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button1"
+				name: "button"
 				"text": "Confrim"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 370

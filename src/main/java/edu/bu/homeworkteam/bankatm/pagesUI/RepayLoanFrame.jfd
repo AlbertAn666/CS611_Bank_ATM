@@ -6,8 +6,9 @@ new FormModel {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
 			name: "this"
 			"title": "Repay Loan"
+			"visible": true
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField1"
+				name: "collateralIdField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 125
 				"y": 85
@@ -18,7 +19,7 @@ new FormModel {
 				name: "label1"
 				"text": "Collateral ID"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 15
+				"x": 25
 				"y": 85
 				"width": 105
 				"height": 30
@@ -33,7 +34,7 @@ new FormModel {
 				"y": 125
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField3"
+				name: "accountIdField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"width": 385
 				"height": 30
@@ -41,7 +42,7 @@ new FormModel {
 				"y": 125
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button1"
+				name: "button"
 				"text": "Confrim"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 370

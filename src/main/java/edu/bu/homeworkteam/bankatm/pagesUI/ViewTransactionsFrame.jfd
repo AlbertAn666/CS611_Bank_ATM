@@ -7,7 +7,7 @@ new FormModel {
 			"autoSize": false
 		} ) {
 			name: "this"
-			"title": "Collateral"
+			"title": "View transactions"
 			"visible": true
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "scrollPane1"
@@ -22,7 +22,7 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label1"
-				"text": "Collateral"
+				"text": "Transactions"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 15
 				"y": 10
@@ -30,62 +30,23 @@ new FormModel {
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "scrollPane2"
 				add( new FormComponent( "javax.swing.JTextArea" ) {
-					name: "collateralInfoArea"
+					name: "transactionInfoArea"
 					"background": new com.jformdesigner.model.SwingColor( "CheckBox.background" )
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 320
 				"y": 35
 				"width": 475
-				"height": 335
+				"height": 555
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label2"
-				"text": "Collateral Information"
+				"text": "Transaction Information"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"width": 225
 				"height": 16
 				"x": 320
 				"y": 10
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "borrowButton"
-				"text": "borrow loan"
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 485
-				"y": 555
-				"width": 150
-				"height": 30
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "repayButton"
-				"text": "repay loan"
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"width": 150
-				"height": 30
-				"x": 640
-				"y": 555
-			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane3"
-				add( new FormComponent( "javax.swing.JTextArea" ) {
-					name: "loanArea"
-					"editable": false
-					"background": new com.jformdesigner.model.SwingColor( "Button.background" )
-				} )
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 320
-				"y": 415
-				"width": 270
-				"height": 130
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label3"
-				"text": "Loan summary"
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 320
-				"y": 385
-				"width": 185
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )

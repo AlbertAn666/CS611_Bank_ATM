@@ -39,11 +39,12 @@ public class Customer {
     if the customer return 200usd to the bank, then the corresponding balance in his account will reduce by 200usd,
     the loan will reduce by 200usd;
      */
-    @ElementCollection(fetch = FetchType.EAGER)
-    //@CollectionTable(name = "customer_numbers_of_shares")
-    @MapKeyColumn(name = "currency")
-    @Column(name ="loan")
-    private Map<Currency, Float> loans=new HashMap<>(); //key: currency; value: loans;
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    //@CollectionTable(name = "customer_numbers_of_shares")
+//    @MapKeyColumn(name = "currency")
+//    @Column(name ="loan")
+//    private Map<Currency, Float> loans=new HashMap<>(); //key: currency; value: loans;
+    private float loan=0;
 
     /*
     the value of mappedBy is the name of the association-mapping attribute on the owning side
@@ -62,9 +63,9 @@ public class Customer {
 
     private List<Account> accounts=new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
-    @Fetch(FetchMode.SELECT) //avoid duplicates
-    private List<Collateral> collateralList=new ArrayList<>();
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
+//    @Fetch(FetchMode.SELECT) //avoid duplicates
+//    private List<Collateral> collateralList=new ArrayList<>();
 
     //@OneToMany(fetch = FetchType.EAGER)
     //private List<Collateral> collaterals = new ArrayList<>();

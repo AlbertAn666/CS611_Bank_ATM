@@ -24,8 +24,8 @@ public class CustomerService {
     TransactionRepository transactionRepository;
     //@Autowired
     //LoanRepository loanRepository;
-    //@Autowired
-    //CollateralRepository collateralRepository;
+    @Autowired
+    CollateralRepository collateralRepository;
 
     public int createAccount(int customerId, AccountType accountType
        //     , float deposit
@@ -205,6 +205,91 @@ public class CustomerService {
         }
         return ServiceConfig.ACCOUNT_ERROR;
     }
+
+    public ServiceResult addCollateral(int customerId, String name, float value, Currency currency, int accountId) {
+        // set collateral attribute
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        Customer customer = optionalCustomer.get();
+
+        Account account=null;
+        for (Account accountOfCustomer :
+                customer.getAccounts()) {
+            if(accountOfCustomer.getId()==accountId){
+                account=accountOfCustomer;
+            }
+        }
+        if(account==null){
+            return new ServiceResult(false,"You don't have this account");
+        }
+
+        Collateral collateral = collateralRepository.create();
+        collateral.setCustomer(customer);
+        collateral.setValue(value);
+        collateral.setCurrency(currency);
+        collateral.setName(name);
+        collateralRepository.save(collateral);
+        float originalBalance=account.getBalances().getOrDefault(currency,0f);
+        account.getBalances().put(currency,originalBalance+value);
+        accountRepository.save(account);
+
+        return new ServiceResult(true,"");
+    }
+
+
+
+    public ServiceResult removeCollateral(int customerId, int collateralId, int accountId) {
+        // set collateral attribute
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        Customer customer = optionalCustomer.get();
+
+        List<Collateral> collateralList=collateralRepository.getByCustomerId(customerId);
+
+        Collateral collateral=null;
+        for (Collateral collateralOfCustomer :
+                collateralList) {
+            if(collateralOfCustomer.getId()==collateralId){
+                collateral=collateralOfCustomer;
+            }
+        }
+
+        if(collateral==null){
+            return new ServiceResult(false, "You don't have this collateral");
+        }
+
+
+        Account account=null;
+        for (Account accountOfCustomer :
+                customer.getAccounts()) {
+            if(accountOfCustomer.getId()==accountId){
+                account=accountOfCustomer;
+            }
+        }
+        if(account==null){
+            return new ServiceResult(false,"You don't have this account");
+        }
+
+        Float balance=account.getBalances().getOrDefault(collateral.getCurrency(),0f);
+        if(balance<collateral.getValue()){
+            return new ServiceResult(false,"You don't have this currency or enough money");
+        }
+
+
+        float newBalance=balance-collateral.getValue();
+        account.getBalances().put(collateral.getCurrency(),newBalance);
+        accountRepository.save(account);
+        collateralRepository.delete(collateral);
+
+        return new ServiceResult(true,"");
+    }
+
+
+
+
+
+
+
+
+
 //
 //    public int requestLoans(int customerId, int accountId, Currency currency, float amount) {
 //        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
@@ -256,22 +341,7 @@ public class CustomerService {
         return ret;
     }*/
 /*
-    public int addCollateral(int customerId, String name, float value, Currency currency) {
-        // set collateral attribute
-        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
-        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-        Customer customer = optionalCustomer.get();
-        Collateral collateral = collateralRepository.create();
-        collateral.setCustomer(customer);
-        collateral.setValue(value);
-        collateral.setCurrency(currency);
-        collateralRepository.save(collateral);
 
-        // set customer attribute
-        customer.getCollaterals().add(collateral);
-        customerRepository.save(customer);
-        return ServiceConfig.OK;
-    }
 
     public int removeCollateral(int customerId, int collateralId) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);

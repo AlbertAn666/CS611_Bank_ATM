@@ -1,1 +1,1 @@
-INSERT INTO bank_atm.customer (id, name, password) VALUES (1000, 'Mike', 'aaa');
+INSERT INTO bank_atm.customer (id, name, password) VALUES (1000,'Mike', 'aaa');

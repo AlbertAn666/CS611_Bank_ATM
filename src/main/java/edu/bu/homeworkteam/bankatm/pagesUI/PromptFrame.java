@@ -34,9 +34,9 @@ public class PromptFrame extends JFrame {
         //---- label ----
         label.setText("text");
         contentPane.add(label);
-        label.setBounds(10, 10, 405, 80);
+        label.setBounds(10, 10, 485, 80);
 
-        contentPane.setPreferredSize(new Dimension(430, 135));
+        contentPane.setPreferredSize(new Dimension(495, 135));
         pack();
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
