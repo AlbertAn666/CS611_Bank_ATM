@@ -1,50 +1,55 @@
 package edu.bu.homeworkteam.bankatm.pagesUI;
 
 import edu.bu.homeworkteam.bankatm.Serviece.ManagerStockService;
+import edu.bu.homeworkteam.bankatm.entities.Stock;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 /**
  * the frame for the admin modifying stocks
  */
 public class ModifyStockFrame extends JFrame {
-    ManagerStockService managerStockService;
+    private int stockId;
     JPanel panel = new JPanel();
-    JLabel label1 = new JLabel("Stock symbol: ");
-    JLabel label3 = new JLabel("Stock price: ");
-    JTextField symTextField = new JTextField(50);
-    JTextField priceTextField = new JTextField(50);
+
+    JLabel label = new JLabel("Stock price: ");
+    JTextField priceTextField = new JTextField(10);
     JButton modifyButton = new JButton("Modify");
+    StockMarketFrame stockMarketFrame;
 
-    public ModifyStockFrame() {
-        managerStockService = new ManagerStockService();
-        setSize(900, 1100);
-        panel.setLayout(null);
-        label1.setBounds(300, 400, 80, 25);
-        label3.setBounds(300, 500, 80, 25);
-        symTextField.setBounds(400, 400, 200, 25);
-        priceTextField.setBounds(400, 500, 200, 25);
-        modifyButton.setBounds(400, 600, 100, 25);
+    public void setStockMarketFrame(StockMarketFrame stockMarketFrame) {
+        this.stockMarketFrame = stockMarketFrame;
+    }
 
-        panel.add(label1); panel.add(label3); panel.add(modifyButton);
-        panel.add(symTextField); panel.add(priceTextField);
+    public ModifyStockFrame(int stockId) {
+        this.stockId = stockId;
+        setSize(200, 200);
+        label.setBounds(50, 80, 50, 25);
+        priceTextField.setBounds(100, 80, 50, 25);
+        modifyButton.setBounds(70, 120, 60, 25);
+
+        panel.add(label); panel.add(priceTextField);
+        panel.add(modifyButton);
         add(panel);
+        setVisible(true);
 
         modifyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String sym = symTextField.getText();
                 String priceStr = priceTextField.getText();
-                if(sym.equals("") || priceStr.equals("")) {
+                if(priceStr.equals("")) {
                     JOptionPane.showMessageDialog(null, "Invalid input",
                             "Error",JOptionPane.PLAIN_MESSAGE);
                 }
                 float price = Float.parseFloat(priceTextField.getText());
-                GuiManager.getInstance().getManagerStockService().modifyPrice(sym, price);
+                GuiManager.getInstance().getManagerStockService().modifyPrice(stockId, price);
                 JOptionPane.showMessageDialog(null, "Successfully modified",
                         "Success",JOptionPane.PLAIN_MESSAGE);
+                stockMarketFrame.refresh();
             }
         });
     }

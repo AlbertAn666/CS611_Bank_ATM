@@ -19,15 +19,15 @@ public class CheckCustomerFrame extends JFrame {
 
     public CheckCustomerFrame() {
         managerService = new ManagerService();
-        setSize(900, 800);
+        setSize(500, 300);
         add(panel);
         panel.setLayout(null);
 
-        label.setBounds(200, 250, 200, 25);
+        label.setBounds(100, 100, 150, 25);
         panel.add(label);
-        textField.setBounds(400, 250, 200, 25);
+        textField.setBounds(250, 100, 150, 25);
         panel.add(textField);
-        confirmButton.setBounds(400, 350, 100, 25);
+        confirmButton.setBounds(200, 200, 100, 25);
         panel.add(confirmButton);
 
         confirmButton.addActionListener(new ActionListener() {

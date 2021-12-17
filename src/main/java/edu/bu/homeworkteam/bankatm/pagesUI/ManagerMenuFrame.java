@@ -1,6 +1,7 @@
 package edu.bu.homeworkteam.bankatm.pagesUI;
 
 import edu.bu.homeworkteam.bankatm.Serviece.ManagerService;
+import edu.bu.homeworkteam.bankatm.Serviece.ManagerStockService;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,7 @@ import java.util.Vector;
  * displays options for manager(admin) input
  */
 public class ManagerMenuFrame extends JFrame {
+    ManagerStockService managerStockService;
     JPanel jp = new JPanel();
     JButton checkCustomerButton = new JButton("Check Customers");
     JButton getTransactionButton = new JButton("Daily Report");
@@ -19,7 +21,7 @@ public class ManagerMenuFrame extends JFrame {
     JButton stockMarketButton = new JButton("Stock Market");
 
     public ManagerMenuFrame() {
-
+        managerStockService = new ManagerStockService();
         setSize(900, 800);
         setLocation(1500, 400);
         add(jp);
@@ -49,10 +51,8 @@ public class ManagerMenuFrame extends JFrame {
         getTransactionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Vector<Vector<String>> data = GuiManager.getInstance().getManagerService().checkUpTodayTransactions();
-                System.out.println("Here");
-                ShowTransactionFrame showTransactionFrame = new ShowTransactionFrame(data);
-                showTransactionFrame.setVisible(true);
+                TransactionSelectFrame transactionSelectFrame = new TransactionSelectFrame();
+                transactionSelectFrame.setVisible(true);
             }
         });
 
@@ -68,7 +68,7 @@ public class ManagerMenuFrame extends JFrame {
         chargeInterestButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                managerService.chargeInterest();
+                GuiManager.getInstance().getManagerService().chargeInterest();
                 JOptionPane.showMessageDialog(null, "Successfully charge interest",
                         "Success",JOptionPane.PLAIN_MESSAGE);
             }
@@ -77,7 +77,8 @@ public class ManagerMenuFrame extends JFrame {
         stockMarketButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StockMarketFrame stockMarketFrame = new StockMarketFrame();
+                Vector<Vector<String>> stocksInfo = managerStockService.getStockInfo();
+                StockMarketFrame stockMarketFrame = new StockMarketFrame(stocksInfo);
                 stockMarketFrame.setVisible(true);
             }
         });
