@@ -47,6 +47,7 @@ public class ManagerMenuFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Vector<Vector<String>> data = GuiManager.getInstance().getManagerService().checkUpTodayTransactions();
+                System.out.println("Here");
                 ShowTransactionFrame showTransactionFrame = new ShowTransactionFrame(data);
                 showTransactionFrame.setVisible(true);
             }

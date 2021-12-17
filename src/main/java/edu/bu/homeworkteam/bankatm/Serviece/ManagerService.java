@@ -121,6 +121,7 @@ public class ManagerService {
         SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = dateFmt.format(new Date());
         Iterable<Transaction> transactions = GuiManager.getInstance().getTransactionRepository().findAll();
+        System.out.println("Here");
         for(Transaction transaction: transactions) {
             Vector<String> transactionInfo = new Vector<>();
             // Tag:
