@@ -122,7 +122,7 @@ public class ManagerService {
             System.out.println(account.getId());
             Vector<String> accountInfo = new Vector<>();
             accountInfo.add(String.valueOf(account.getId()));
-            accountInfo.add(EntitiesConfig.getAccountType(account.getAccountType()));
+            accountInfo.add(account.getAccountType().toString());
 
             ret.add(accountInfo);
         }

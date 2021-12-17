@@ -44,7 +44,7 @@ public class Account {
 
         for(Currency currency: balances.keySet()) {
             Vector<String> temp = new Vector<>();
-            temp.add(EntitiesConfig.getCurrencyType(currency));
+            temp.add(currency.toString());
             temp.add(balances.get(currency).toString());
 
             ret.add(temp);
