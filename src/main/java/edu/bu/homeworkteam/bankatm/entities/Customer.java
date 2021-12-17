@@ -4,12 +4,12 @@ import edu.bu.homeworkteam.bankatm.repositories.AccountRepository;
 import edu.bu.homeworkteam.bankatm.repositories.CustomerRepository;
 import javafx.util.Pair;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.transaction.Transactional;
+import java.util.*;
 
 /**
  * customer
@@ -18,7 +18,6 @@ import java.util.Map;
  */
 @Data
 @Entity
-
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,6 +54,8 @@ public class Customer {
     is not maintained by this side.
     */
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
+    @Fetch(FetchMode.SELECT) //avoid duplicates
+
     private List<Account> accounts=new ArrayList<>();
 
     //@OneToMany(fetch = FetchType.EAGER)

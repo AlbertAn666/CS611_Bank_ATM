@@ -6,7 +6,6 @@ package edu.bu.homeworkteam.bankatm.pagesUI;
 
 import edu.bu.homeworkteam.bankatm.entities.Account;
 import edu.bu.homeworkteam.bankatm.entities.Customer;
-import javafx.scene.control.SelectionMode;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,24 +25,19 @@ public class HomeFrame extends JFrame {
         initComponents();
 
 
-
-        int customerId=GuiManager.getInstance().getLoggedInCustomerId();
-
-        System.out.println(customerId);
-        customer= GuiManager.getInstance().getCustomerRepository().findById(customerId).get();
-        System.out.println(customer.getAccounts().size());
-        renderAccountJList();
-
-
-
         createAccountMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                new CreateAccountFrame();
+                openCreateAccountFrame();
             }
         });
 
-
+        transferMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                openTransferFrame();
+            }
+        });
 
         accountJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         accountJList.addListSelectionListener(new ListSelectionListener() {
@@ -51,8 +45,9 @@ public class HomeFrame extends JFrame {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
                 JList jList=(JList)listSelectionEvent.getSource();
                 Account account=(Account)jList.getSelectedValue();
-                System.out.println(account.getId());
-                accountInfoArea.setText(getAccountInformation(account));
+                if(account!=null) {
+                    accountInfoArea.setText(getAccountInformation(account));
+                }
             }
         });
 
@@ -72,16 +67,27 @@ public class HomeFrame extends JFrame {
                 return jLabel;
             }
         });
-
+        refresh();
     }
 
-    private void refresh(){
 
+    private void openTransferFrame(){
+        new TransferFrame().setHomeFrame(this);
+    }
+
+
+    private void openCreateAccountFrame(){
+        new CreateAccountFrame().setHomeFrame(this);
+    }
+
+    public void refresh(){
+        int customerId=GuiManager.getInstance().getLoggedInCustomerId();
+        customer= GuiManager.getInstance().getCustomerRepository().findById(customerId).get();
+        System.out.println(customer.getAccounts().size());
+        renderAccountJList();
     }
 
     private void renderAccountJList(){
-
-
 
         DefaultListModel<Account> listModel=new DefaultListModel<>();
         for (Account account:customer.getAccounts()
@@ -90,8 +96,6 @@ public class HomeFrame extends JFrame {
         }
         accountJList.setModel(listModel);
     }
-
-
     private String getAccountInformation(Account account){
         StringBuilder stringBuilder=new StringBuilder();
         stringBuilder.append("Account ID: ").append(account.getId()).append("\n");
@@ -106,13 +110,13 @@ public class HomeFrame extends JFrame {
         return stringBuilder.toString();
     }
 
-
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - unknown
         menuBar = new JMenuBar();
         accountMenu = new JMenu();
         createAccountMenuItem = new JMenuItem();
+        transferMenuItem = new JMenuItem();
         stockMenu = new JMenu();
         menuItem2 = new JMenuItem();
         menuItem3 = new JMenuItem();
@@ -143,6 +147,10 @@ public class HomeFrame extends JFrame {
                 //---- createAccountMenuItem ----
                 createAccountMenuItem.setText("Create account");
                 accountMenu.add(createAccountMenuItem);
+
+                //---- transferMenuItem ----
+                transferMenuItem.setText("Transfer");
+                accountMenu.add(transferMenuItem);
             }
             menuBar.add(accountMenu);
 
@@ -226,6 +234,7 @@ public class HomeFrame extends JFrame {
     private JMenuBar menuBar;
     private JMenu accountMenu;
     private JMenuItem createAccountMenuItem;
+    private JMenuItem transferMenuItem;
     private JMenu stockMenu;
     private JMenuItem menuItem2;
     private JMenuItem menuItem3;

@@ -117,7 +117,7 @@ public class LoginFrame extends JFrame {
             new HomeFrame();
             this.setVisible(false);
         }else if(loginResult==ServiceConfig.PASSWORD_ERROR){
-            new PromptDialog(this,"Login failed. Please check and try again.");
+            new PromptFrame("Login failed. Please check and try again.");
         }
     }
 }
