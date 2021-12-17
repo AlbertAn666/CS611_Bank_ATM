@@ -30,4 +30,21 @@ As we can see, all the member variables as type of Service and Repository were n
 which indicated the injection of dependency to get free from manual instantiation. The application of Dependency Injection 
 allows for loose coupling of components and moves the responsibility of managing components onto the container.
 
+GUI Relationship (Design of GUI and operation logic)
+1. HomeFrame as the center of operations and user experience. Similar to Home Screen in Apple iOS, the HomeFrame is the home of the bank ATM. 
+No matter where you are, you can go back to the HomeFrame easily because the HomeFrame always stays there, never closes, unless you quit the program, 
+which offers a huge sense of safety and rely. 
 
+The information of accounts is shown in the HomeFrame, which can be directly accessed as soon as users log in. 
+The reason why we put the information of accounts in the HomeFrame rather than conceal it in other window 
+is that we think the information of accounts is the most important information for users. So it should be the most conspicuous. 
+
+
+The menu bar in HomeFrame is the launch hub of all the business and operations, such as transfer, withdraw, loans, stocks, etc, 
+which realizes great extensibility of the GUI design. For example, if in the future, we need to add other business to our bank ATM, like funds, exchange, assets management, etc., 
+we can simply add these business as menu items in the menu bar. 
+
+
+2. One business, one window; one operation, one window. When a user is viewing the business of stocks, there is a stand-alone window of ViewStocksFrame for him. When he is transferring, 
+he can easily operate in the separate window of TransferFrame. the benefits of these kind of design is it can make user concentrate on the current business and operation, keeping users from distractions. 
+Whats more, it allows for loose coupling of GUI windows and realizes great extensibility. 
