@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -13,7 +14,6 @@ import java.util.Vector;
 public class CustomerAccountsFrame extends JFrame {
     int selectedAccount = 0;
     ManagerService managerService;
-    JScrollPane pane = new JScrollPane();
     JPanel panel = new JPanel();
     JTable accountTable = new JTable();
     Vector<String> column = new Vector<>();
@@ -32,17 +32,13 @@ public class CustomerAccountsFrame extends JFrame {
         ListSelectionModel selectionModel = accountTable.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setSize(900, 1100);
-        setLocation(1500, 400);
+        setSize(600, 300);
         accountTable.setBounds(10, 10, 880, 900);
-        selectButton.setBounds(100,  1000, 300, 80);
-        checkButton.setBounds(500, 1000, 300, 80);
-        panel.add(selectButton);
+        selectButton.setBounds(100,  1000, 100, 80);
+        checkButton.setBounds(400, 1000, 100, 80);
+        panel.add(accountTable);
         panel.add(checkButton);
-        pane.add(accountTable);
-        add(pane);
+        panel.add(selectButton);
         add(panel);
 
         selectionModel.addListSelectionListener(new ListSelectionListener() {
@@ -60,8 +56,13 @@ public class CustomerAccountsFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(selectedAccount != 0) {
                     Vector<Vector<String>> accountInfo =  managerService.checkUpBalances(selectedAccount);
-                    AccountInfoFrame accountInfoFrame = new AccountInfoFrame(accountInfo);
-                    accountInfoFrame.setVisible(true);
+                    if(accountInfo.size() == 0) {
+                        JOptionPane.showMessageDialog(null, "No balance in this account",
+                                "ERROR",JOptionPane.PLAIN_MESSAGE);
+                    } else {
+                        AccountInfoFrame accountInfoFrame = new AccountInfoFrame(accountInfo);
+                        accountInfoFrame.setVisible(true);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "Didn't select an account!",
                             "ERROR",JOptionPane.PLAIN_MESSAGE);

@@ -107,17 +107,26 @@ public class LoginFrame extends JFrame {
     }
 
     public void login(){
-        int customerId=Integer.parseInt(customerIdField.getText());
+        String userId = customerIdField.getText();
         String password=String.valueOf(passwordField.getPassword());
-        int loginResult= GuiManager.getInstance().getLoginService().loginCustomer(customerId,password);
+        if(userId.equals("admin")) {
+            if(password.equals("adminpassword")) {
+                new ManagerMenuFrame();
+            } else {
+                new PromptFrame(this,"Login failed. Please check and try again.");
+            }
+        } else {
+            int customerId = Integer.parseInt(customerIdField.getText());
+            int loginResult = GuiManager.getInstance().getLoginService().loginCustomer(customerId, password);
 
-        if(loginResult==ServiceConfig.OK){
-            System.out.println("Login successful");
-            GuiManager.getInstance().setLoggedInCustomerId(customerId);
-            new HomeFrame();
-            this.setVisible(false);
-        }else if(loginResult==ServiceConfig.PASSWORD_ERROR){
-            new PromptFrame("Login failed. Please check and try again.");
+            if (loginResult == ServiceConfig.OK) {
+                System.out.println("Login successful");
+                GuiManager.getInstance().setLoggedInCustomerId(customerId);
+                new HomeFrame();
+                this.setVisible(false);
+            } else if (loginResult == ServiceConfig.PASSWORD_ERROR) {
+                new PromptFrame(this, "Login failed. Please check and try again.");
+            }
         }
     }
 }

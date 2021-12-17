@@ -2,6 +2,7 @@ package edu.bu.homeworkteam.bankatm.Serviece;
 
 import edu.bu.homeworkteam.bankatm.entities.*;
 import edu.bu.homeworkteam.bankatm.entities.Currency;
+import edu.bu.homeworkteam.bankatm.pagesUI.GuiManager;
 import edu.bu.homeworkteam.bankatm.repositories.AccountRepository;
 import edu.bu.homeworkteam.bankatm.repositories.CustomerRepository;
 //import edu.bu.homeworkteam.bankatm.repositories.LoanRepository;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import javax.xml.stream.events.EndElement;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Component
@@ -26,7 +29,7 @@ public class ManagerService {
 
 
     public int payInterest() {
-        Iterable<Account> accounts = accountRepository.findAll();
+        Iterable<Account> accounts = GuiManager.getInstance().getAccountRepository().findAll();
         for(Account account: accounts) {
             if(account.getAccountType() == AccountType.SAVINGS) {
                 Map<Currency, Float> currentBalances = account.getBalances();
@@ -58,14 +61,14 @@ public class ManagerService {
 //    }
 
     public Customer getCustomer(int customerId) {
-        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        Optional<Customer> optionalCustomer = GuiManager.getInstance().getCustomerRepository().findById(customerId);
         if(optionalCustomer.isEmpty()) return null;
         return optionalCustomer.get();
     }
 
     public Vector<Vector<String>> checkUpTransactions(int customerId) {
         Vector<Vector<String>> ret = new Vector<>();
-        List<Transaction> transactions = transactionRepository.getTransactionsByCustomerId(customerId);
+        List<Transaction> transactions = GuiManager.getInstance().getTransactionRepository().getTransactionsByCustomerId(customerId);
         for(Transaction transaction: transactions) {
             Vector<String> temp = transaction.getTransaction();
             ret.add(temp);
@@ -96,6 +99,7 @@ public class ManagerService {
 
         // show as accountId, accountType
         for(Account account: accounts) {
+            System.out.println(account.getId());
             Vector<String> accountInfo = new Vector<>();
             accountInfo.add(String.valueOf(account.getId()));
             accountInfo.add(EntitiesConfig.getAccountType(account.getAccountType()));
@@ -106,7 +110,7 @@ public class ManagerService {
     }
 
     public Vector<Vector<String>> checkUpBalances(int accountId) {
-        Optional<Account> optionalAccount = accountRepository.findById(accountId);
+        Optional<Account> optionalAccount = GuiManager.getInstance().getAccountRepository().findById(accountId);
         if(optionalAccount.isEmpty()) return null;
         Account account = optionalAccount.get();
         return account.getAccountBalances();
@@ -116,11 +120,12 @@ public class ManagerService {
         Vector<Vector<String>> ret = new Vector<>();
         SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = dateFmt.format(new Date());
-        Iterable<Transaction> transactions = transactionRepository.findAll();
+        Iterable<Transaction> transactions = GuiManager.getInstance().getTransactionRepository().findAll();
         for(Transaction transaction: transactions) {
             Vector<String> transactionInfo = new Vector<>();
             // Tag:
-            String transDate = dateFmt.format(transaction.getInstant());
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.of("America/New_York"));
+            String transDate = dateTimeFormatter.format(transaction.getInstant());
             if(todayDate.equals(transDate)) {
                 ret.add(transaction.getTransaction());
             }
