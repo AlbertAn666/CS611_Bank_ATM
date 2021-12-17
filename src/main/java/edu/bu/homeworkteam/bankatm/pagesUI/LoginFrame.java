@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
- * @author unknown
+ * @author gung
  */
 
 public class LoginFrame extends JFrame {
@@ -113,7 +113,7 @@ public class LoginFrame extends JFrame {
             if(password.equals("adminpassword")) {
                 new ManagerMenuFrame();
             } else {
-                new PromptFrame(this,"Login failed. Please check and try again.");
+                new PromptFrame("Login failed. Please check and try again.");
             }
         } else {
             int customerId = Integer.parseInt(customerIdField.getText());
@@ -125,7 +125,7 @@ public class LoginFrame extends JFrame {
                 new HomeFrame();
                 this.setVisible(false);
             } else if (loginResult == ServiceConfig.PASSWORD_ERROR) {
-                new PromptFrame(this, "Login failed. Please check and try again.");
+                new PromptFrame( "Login failed. Please check and try again.");
             }
         }
     }

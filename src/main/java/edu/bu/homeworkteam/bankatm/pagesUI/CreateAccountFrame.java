@@ -11,7 +11,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
- * @author unknown
+ * @author gung
  */
 public class CreateAccountFrame extends JFrame {
     private DefaultComboBoxModel<AccountType> comboBoxModel;

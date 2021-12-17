@@ -1,0 +1,75 @@
+JFDML JFormDesigner: "7.0.5.0.404" Java: "11.0.4" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) {
+			"autoSize": false
+		} ) {
+			name: "this"
+			"title": "Withdraw"
+			"$sizePolicy": 1
+			"visible": true
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "accountIdField"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 120
+				"y": 120
+				"width": 325
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label1"
+				"text": "Account"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 45
+				"y": 125
+				"width": 55
+				"height": 20
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "currencyComboBox"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 120
+				"y": 170
+				"width": 325
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label2"
+				"text": "Currency"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 75
+				"height": 20
+				"x": 45
+				"y": 170
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label3"
+				"text": "Amount"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 55
+				"height": 20
+				"x": 45
+				"y": 220
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "amountField"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"width": 325
+				"height": 26
+				"x": 120
+				"y": 220
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "confirmButton"
+				"text": "Confirm"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 295
+				"y": 315
+				"width": 150
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 510, 425 )
+		} )
+	}
+}

@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
- * @author unknown
+ * @author gung
  */
 public class TransferFrame extends JFrame {
 
