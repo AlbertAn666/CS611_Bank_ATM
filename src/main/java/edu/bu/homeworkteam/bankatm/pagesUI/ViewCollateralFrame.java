@@ -95,6 +95,7 @@ public class ViewCollateralFrame extends JFrame {
         int customerId=GuiManager.getInstance().getLoggedInCustomerId();
         customer= GuiManager.getInstance().getCustomerRepository().findById(customerId).get();
         System.out.println(customer.getAccounts().size());
+        collateralInfoArea.setText("");
         renderJList();
 
 
@@ -106,26 +107,36 @@ public class ViewCollateralFrame extends JFrame {
         DefaultListModel<Collateral> listModel=new DefaultListModel<>();
         List<Collateral> collateralList=GuiManager.getInstance().getCollateralRepository().getByCustomerId(customer.getId());
         Map<Currency, Float> loans= new HashMap<>();
+        Map<Currency, Float> interests= new HashMap<>();
         for (Collateral collateral:collateralList
         ) {
             listModel.addElement(collateral);
             Float loan=loans.get(collateral.getCurrency());
             if(loan==null){
                 loans.put(collateral.getCurrency(),collateral.getValue());
+                interests.put(collateral.getCurrency(),collateral.getValue()*0.013f);
             }else{
                 float newLoan=loan+collateral.getValue();
                 loans.put(collateral.getCurrency(),newLoan);
-
+                interests.put(collateral.getCurrency(),newLoan*0.013f);
             }
 
         }
-        StringBuilder stringBuilder=new StringBuilder();
+        StringBuilder loanStringBuilder=new StringBuilder();
         jList.setModel(listModel);
         for (Map.Entry<Currency, Float> entry :
                 loans.entrySet()) {
-            stringBuilder.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+            loanStringBuilder.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
         }
-        loanArea.setText(stringBuilder.toString());
+        loanArea.setText(loanStringBuilder.toString());
+
+        StringBuilder interestStringBuilder=new StringBuilder();
+        for (Map.Entry<Currency, Float> entry :
+                interests.entrySet()) {
+            interestStringBuilder.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        }
+
+        interestArea.setText(interestStringBuilder.toString());
     }
 
 
@@ -143,6 +154,9 @@ public class ViewCollateralFrame extends JFrame {
         scrollPane3 = new JScrollPane();
         loanArea = new JTextArea();
         label3 = new JLabel();
+        label4 = new JLabel();
+        scrollPane4 = new JScrollPane();
+        interestArea = new JTextArea();
 
         //======== this ========
         setTitle("Collateral");
@@ -196,12 +210,30 @@ public class ViewCollateralFrame extends JFrame {
             scrollPane3.setViewportView(loanArea);
         }
         contentPane.add(scrollPane3);
-        scrollPane3.setBounds(320, 415, 270, 130);
+        scrollPane3.setBounds(320, 415, 240, 130);
 
         //---- label3 ----
         label3.setText("Loan summary");
         contentPane.add(label3);
         label3.setBounds(320, 385, 185, label3.getPreferredSize().height);
+
+        //---- label4 ----
+        label4.setText("Interest predicted summary");
+        contentPane.add(label4);
+        label4.setBounds(570, 385, 215, label4.getPreferredSize().height);
+
+        //======== scrollPane4 ========
+        {
+
+            //---- interestArea ----
+            interestArea.setBackground(UIManager.getColor("Button.background"));
+            interestArea.setEditable(false);
+            interestArea.setLineWrap(true);
+            interestArea.setWrapStyleWord(true);
+            scrollPane4.setViewportView(interestArea);
+        }
+        contentPane.add(scrollPane4);
+        scrollPane4.setBounds(575, 415, 215, 130);
 
         contentPane.setPreferredSize(new Dimension(815, 630));
         pack();
@@ -222,5 +254,8 @@ public class ViewCollateralFrame extends JFrame {
     private JScrollPane scrollPane3;
     private JTextArea loanArea;
     private JLabel label3;
+    private JLabel label4;
+    private JScrollPane scrollPane4;
+    private JTextArea interestArea;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

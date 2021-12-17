@@ -193,7 +193,7 @@ public class CustomerService {
             transactionRepository.save(newTransaction);
 
 
-            fromAccount.getBalances().put(currency, currentMoney - value);
+            fromAccount.getBalances().put(currency, currentMoney - value-value*0.001f);
             accountRepository.save(fromAccount);
 
             // set the new balance

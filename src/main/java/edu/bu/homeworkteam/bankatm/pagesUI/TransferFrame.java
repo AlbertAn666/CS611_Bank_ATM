@@ -43,12 +43,14 @@ public class TransferFrame extends JFrame {
     private void submit(){
 
         int transferResult=-1;
+        Currency currency=Currency.USD;
+        float amount=0;
         try {
             int fromAccountId = Integer.parseInt(fromAccountField.getText());
             int toAccountId = Integer.parseInt(toAccountField.getText());
 
-            Currency currency = (Currency) currencyDefaultComboBoxModel.getSelectedItem();
-            float amount = Float.parseFloat(amountField.getText());
+            currency = (Currency) currencyDefaultComboBoxModel.getSelectedItem();
+            amount = Float.parseFloat(amountField.getText());
             int customerId = GuiManager.getInstance().getLoggedInCustomerId();
 
 
@@ -59,7 +61,7 @@ public class TransferFrame extends JFrame {
 
         if(transferResult== ServiceConfig.OK){
             System.out.println("Transfer successful.");
-            new PromptFrame("Transfer successful!");
+            new PromptFrame("Transfer successful!"+" The handling fee was "+currency.toString()+""+amount*0.001);
             homeFrame.refresh();
             dispose();
         }else{
