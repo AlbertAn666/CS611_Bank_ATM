@@ -12,7 +12,7 @@
 ////import javax.swing.*;
 ////
 /////**
-//// * @author unknown
+//// * @author gung
 //// */
 ////public class PromptDialog extends JDialog {
 ////    public PromptDialog(Window owner) {

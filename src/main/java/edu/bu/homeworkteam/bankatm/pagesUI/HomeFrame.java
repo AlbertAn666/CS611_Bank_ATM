@@ -16,7 +16,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- * @author unknown
+ * @author gung
  */
 
 public class HomeFrame extends JFrame {
@@ -152,6 +152,9 @@ public class HomeFrame extends JFrame {
         sellStockMenuItem = new JMenuItem();
         buyStockMenuItem = new JMenuItem();
         loanMenu = new JMenu();
+        menuItem1 = new JMenuItem();
+        menuItem2 = new JMenuItem();
+        menuItem3 = new JMenuItem();
         customerMenu = new JMenu();
         menuItem6 = new JMenuItem();
         scrollPane1 = new JScrollPane();
@@ -216,6 +219,18 @@ public class HomeFrame extends JFrame {
             //======== loanMenu ========
             {
                 loanMenu.setText("Loans");
+
+                //---- menuItem1 ----
+                menuItem1.setText("View collateral");
+                loanMenu.add(menuItem1);
+
+                //---- menuItem2 ----
+                menuItem2.setText("Borrow loan");
+                loanMenu.add(menuItem2);
+
+                //---- menuItem3 ----
+                menuItem3.setText("Repay loan");
+                loanMenu.add(menuItem3);
             }
             menuBar.add(loanMenu);
 
@@ -280,6 +295,9 @@ public class HomeFrame extends JFrame {
     private JMenuItem sellStockMenuItem;
     private JMenuItem buyStockMenuItem;
     private JMenu loanMenu;
+    private JMenuItem menuItem1;
+    private JMenuItem menuItem2;
+    private JMenuItem menuItem3;
     private JMenu customerMenu;
     private JMenuItem menuItem6;
     private JScrollPane scrollPane1;

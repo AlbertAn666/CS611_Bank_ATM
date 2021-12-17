@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * @author unknown
+ * @author gung
  */
 public class DepositFrame extends JFrame {
 

@@ -1,17 +1,17 @@
 /*
- * Created by JFormDesigner on Thu Dec 16 22:19:44 EST 2021
+ * Created by JFormDesigner on Thu Dec 16 22:36:58 EST 2021
  */
 
 package edu.bu.homeworkteam.bankatm.pagesUI;
 
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author gung
  */
-public class BuyStockFrame extends JFrame {
-    public BuyStockFrame() {
+public class RepayLoanFrame extends JFrame {
+    public RepayLoanFrame() {
         initComponents();
     }
 
@@ -20,33 +20,33 @@ public class BuyStockFrame extends JFrame {
         // Generated using JFormDesigner Evaluation license - unknown
         textField1 = new JTextField();
         label1 = new JLabel();
-        textField2 = new JTextField();
-        label2 = new JLabel();
+        label4 = new JLabel();
+        textField3 = new JTextField();
         button1 = new JButton();
 
         //======== this ========
-        setTitle("Buy Stock");
+        setTitle("Repay Loan");
         var contentPane = getContentPane();
         contentPane.setLayout(null);
         contentPane.add(textField1);
-        textField1.setBounds(145, 75, 315, textField1.getPreferredSize().height);
+        textField1.setBounds(125, 85, 385, 30);
 
         //---- label1 ----
-        label1.setText("Stock ID");
+        label1.setText("Collateral ID");
         contentPane.add(label1);
-        label1.setBounds(new Rectangle(new Point(25, 80), label1.getPreferredSize()));
-        contentPane.add(textField2);
-        textField2.setBounds(145, 115, 315, 26);
+        label1.setBounds(15, 85, 105, 30);
 
-        //---- label2 ----
-        label2.setText("Number of shares");
-        contentPane.add(label2);
-        label2.setBounds(25, 120, 125, 16);
+        //---- label4 ----
+        label4.setText("Account ID");
+        contentPane.add(label4);
+        label4.setBounds(30, 125, 85, 30);
+        contentPane.add(textField3);
+        textField3.setBounds(125, 125, 385, 30);
 
         //---- button1 ----
-        button1.setText("Buy stock");
+        button1.setText("Confrim");
         contentPane.add(button1);
-        button1.setBounds(355, 205, 107, button1.getPreferredSize().height);
+        button1.setBounds(370, 305, 155, 35);
 
         {
             // compute preferred size
@@ -71,8 +71,8 @@ public class BuyStockFrame extends JFrame {
     // Generated using JFormDesigner Evaluation license - unknown
     private JTextField textField1;
     private JLabel label1;
-    private JTextField textField2;
-    private JLabel label2;
+    private JLabel label4;
+    private JTextField textField3;
     private JButton button1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

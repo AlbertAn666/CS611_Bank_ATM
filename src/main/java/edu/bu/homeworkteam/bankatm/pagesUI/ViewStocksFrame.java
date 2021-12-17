@@ -8,7 +8,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * @author unknown
+ * @author gung
  */
 public class ViewStocksFrame extends JFrame {
     public ViewStocksFrame() {
