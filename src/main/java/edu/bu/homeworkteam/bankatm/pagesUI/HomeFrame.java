@@ -24,6 +24,12 @@ public class HomeFrame extends JFrame {
     public HomeFrame(){
         initComponents();
 
+        refreshMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                refresh();
+            }
+        });
 
         createAccountMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -36,6 +42,20 @@ public class HomeFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 openTransferFrame();
+            }
+        });
+
+        depositMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                openDepositFrame();
+            }
+        });
+
+        withdrawMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                openWithdrawFrame();
             }
         });
 
@@ -75,9 +95,16 @@ public class HomeFrame extends JFrame {
         new TransferFrame().setHomeFrame(this);
     }
 
+    private void openDepositFrame(){
+        new DepositFrame().setHomeFrame(this);
+    }
 
     private void openCreateAccountFrame(){
         new CreateAccountFrame().setHomeFrame(this);
+    }
+
+    private void openWithdrawFrame(){
+        new WithdrawFrame().setHomeFrame(this);
     }
 
     public void refresh(){
@@ -117,11 +144,13 @@ public class HomeFrame extends JFrame {
         accountMenu = new JMenu();
         createAccountMenuItem = new JMenuItem();
         transferMenuItem = new JMenuItem();
+        withdrawMenuItem = new JMenuItem();
+        refreshMenuItem = new JMenuItem();
+        depositMenuItem = new JMenuItem();
         stockMenu = new JMenu();
-        menuItem2 = new JMenuItem();
-        menuItem3 = new JMenuItem();
-        menuItem4 = new JMenuItem();
-        menuItem5 = new JMenuItem();
+        viewStocksMenuItem = new JMenuItem();
+        sellStockMenuItem = new JMenuItem();
+        buyStockMenuItem = new JMenuItem();
         loanMenu = new JMenu();
         customerMenu = new JMenu();
         menuItem6 = new JMenuItem();
@@ -151,6 +180,18 @@ public class HomeFrame extends JFrame {
                 //---- transferMenuItem ----
                 transferMenuItem.setText("Transfer");
                 accountMenu.add(transferMenuItem);
+
+                //---- withdrawMenuItem ----
+                withdrawMenuItem.setText("Withdraw");
+                accountMenu.add(withdrawMenuItem);
+
+                //---- refreshMenuItem ----
+                refreshMenuItem.setText("Refresh");
+                accountMenu.add(refreshMenuItem);
+
+                //---- depositMenuItem ----
+                depositMenuItem.setText("Deposit");
+                accountMenu.add(depositMenuItem);
             }
             menuBar.add(accountMenu);
 
@@ -158,21 +199,17 @@ public class HomeFrame extends JFrame {
             {
                 stockMenu.setText("Stocks");
 
-                //---- menuItem2 ----
-                menuItem2.setText("View my stocks");
-                stockMenu.add(menuItem2);
+                //---- viewStocksMenuItem ----
+                viewStocksMenuItem.setText("View stocks");
+                stockMenu.add(viewStocksMenuItem);
 
-                //---- menuItem3 ----
-                menuItem3.setText("View stocks in markets");
-                stockMenu.add(menuItem3);
+                //---- sellStockMenuItem ----
+                sellStockMenuItem.setText("Sell stock");
+                stockMenu.add(sellStockMenuItem);
 
-                //---- menuItem4 ----
-                menuItem4.setText("Sell my stock");
-                stockMenu.add(menuItem4);
-
-                //---- menuItem5 ----
-                menuItem5.setText("Buy my stock");
-                stockMenu.add(menuItem5);
+                //---- buyStockMenuItem ----
+                buyStockMenuItem.setText("Buy stock");
+                stockMenu.add(buyStockMenuItem);
             }
             menuBar.add(stockMenu);
 
@@ -235,11 +272,13 @@ public class HomeFrame extends JFrame {
     private JMenu accountMenu;
     private JMenuItem createAccountMenuItem;
     private JMenuItem transferMenuItem;
+    private JMenuItem withdrawMenuItem;
+    private JMenuItem refreshMenuItem;
+    private JMenuItem depositMenuItem;
     private JMenu stockMenu;
-    private JMenuItem menuItem2;
-    private JMenuItem menuItem3;
-    private JMenuItem menuItem4;
-    private JMenuItem menuItem5;
+    private JMenuItem viewStocksMenuItem;
+    private JMenuItem sellStockMenuItem;
+    private JMenuItem buyStockMenuItem;
     private JMenu loanMenu;
     private JMenu customerMenu;
     private JMenuItem menuItem6;

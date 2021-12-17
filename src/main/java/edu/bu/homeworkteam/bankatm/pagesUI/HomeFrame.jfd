@@ -64,25 +64,33 @@ new FormModel {
 						name: "transferMenuItem"
 						"text": "Transfer"
 					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "withdrawMenuItem"
+						"text": "Withdraw"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "refreshMenuItem"
+						"text": "Refresh"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "depositMenuItem"
+						"text": "Deposit"
+					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "stockMenu"
 					"text": "Stocks"
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuItem2"
-						"text": "View my stocks"
+						name: "viewStocksMenuItem"
+						"text": "View stocks"
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuItem3"
-						"text": "View stocks in markets"
+						name: "sellStockMenuItem"
+						"text": "Sell stock"
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuItem4"
-						"text": "Sell my stock"
-					} )
-					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuItem5"
-						"text": "Buy my stock"
+						name: "buyStockMenuItem"
+						"text": "Buy stock"
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
