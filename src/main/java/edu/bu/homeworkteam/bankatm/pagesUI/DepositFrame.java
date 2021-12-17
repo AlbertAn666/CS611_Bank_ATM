@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * Frame for customer to deposit money
  * @author gung
  */
 public class DepositFrame extends JFrame {

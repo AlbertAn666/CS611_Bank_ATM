@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+/**
+ * the customer stock service logic, including creating a stock account, buying/selling stocks,
+ * showing stocks information, showing profit, etc.
+ */
 @Component
 public class CustomerStockService extends CustomerService {
     @Autowired

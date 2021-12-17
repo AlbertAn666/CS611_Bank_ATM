@@ -16,6 +16,10 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * the manager bank service logic, including pay interests and charge interest,
+ * show information of customers, show transactions information, etc.
+ */
 @Component
 public class ManagerService {
     @Autowired

@@ -11,6 +11,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
+ * frame for the customer to create account
  * @author gung
  */
 public class CreateAccountFrame extends JFrame {

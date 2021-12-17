@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.*;
 
+/**
+ *  the customer bank service logic, including create accounts,
+ *  delete accounts, deposit, withdraw, transfer money, view information, etc.
+ */
 @Service
 public class CustomerService {
     @Autowired

@@ -8,6 +8,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
+ * Use for customer to view stocks
  * @author gung
  */
 public class ViewStocksFrame extends JFrame {

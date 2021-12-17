@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * frame for admin to add stock
+ */
 public class AddStockFrame extends JFrame {
     ManagerStockService managerStockService;
     JPanel panel = new JPanel();

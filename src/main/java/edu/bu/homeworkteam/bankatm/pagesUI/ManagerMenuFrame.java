@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+/**
+ * displays options for manager(admin) input
+ */
 public class ManagerMenuFrame extends JFrame {
     JPanel jp = new JPanel();
     JButton checkCustomerButton = new JButton("Check Customers");

@@ -8,6 +8,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
+ *  frame for customer to buy stocks
  * @author gung
  */
 public class BuyStockFrame extends JFrame {

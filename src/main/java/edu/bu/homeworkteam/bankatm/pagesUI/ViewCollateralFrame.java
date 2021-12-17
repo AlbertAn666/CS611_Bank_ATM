@@ -8,6 +8,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
+ * View all the collateral
  * @author gung
  */
 public class ViewCollateralFrame extends JFrame {

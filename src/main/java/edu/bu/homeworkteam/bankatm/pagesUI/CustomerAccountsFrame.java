@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+/**
+ *  frame for the admin to check the account of the customer
+ */
 public class CustomerAccountsFrame extends JFrame {
     int selectedAccount = 0;
     ManagerService managerService;

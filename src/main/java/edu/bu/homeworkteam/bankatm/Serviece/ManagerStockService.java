@@ -6,7 +6,10 @@ import edu.bu.homeworkteam.bankatm.repositories.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
+/**
+ *  the manager stock service logic, including add stocks,
+ *  maintain stocks, modify price, etc.
+ */
 @Component
 public class ManagerStockService {
     @Autowired

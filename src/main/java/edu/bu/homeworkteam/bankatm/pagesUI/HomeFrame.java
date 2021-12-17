@@ -16,6 +16,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
+ *  the main frame of customer and displays options for customer
  * @author gung
  */
 

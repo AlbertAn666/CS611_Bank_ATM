@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
+ * use for customer to withdraw money
  * @author gung
  */
 public class WithdrawFrame extends JFrame {

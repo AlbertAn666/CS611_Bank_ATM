@@ -8,6 +8,9 @@ import edu.bu.homeworkteam.bankatm.repositories.TransactionRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * starts the GUI and handles affairs.
+ */
 @Data
 public class GuiManager {
     @Autowired

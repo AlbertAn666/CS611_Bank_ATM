@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+/**
+ * frame for checking on a specific customer
+ */
 public class CheckCustomerFrame extends JFrame {
     ManagerService managerService;
     JPanel panel = new JPanel();
