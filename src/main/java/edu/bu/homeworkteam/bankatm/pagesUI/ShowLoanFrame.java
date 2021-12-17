@@ -2,27 +2,20 @@ package edu.bu.homeworkteam.bankatm.pagesUI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.util.Vector;
 
-/**
- * Frame to show the account information
- */
-public class AccountInfoFrame extends JFrame {
-    JPanel panel = new JPanel();
+public class ShowLoanFrame extends JFrame{
     JTable table = new JTable();
-    Vector<String> column =  new Vector<>();
+    Vector<String> column = new Vector<>();
 
-    public AccountInfoFrame(Vector<Vector<String>> data) {
-        setSize(500, 200);
+    public ShowLoanFrame(Vector<Vector<String>> data) {
         column.add("Currency"); column.add("Amount");
 
-        System.out.println(data);
         DefaultTableModel model = new DefaultTableModel(data, column);
         table.setModel(model);
 
+        setSize(300, 200);
         JScrollPane pane = new JScrollPane(table);
-        panel.add(pane);
-        add(panel);
+        add(pane);
     }
 }

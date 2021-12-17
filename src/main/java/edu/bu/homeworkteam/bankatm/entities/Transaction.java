@@ -53,12 +53,12 @@ public class Transaction {
         // id, time, type, from account, source, destination, currency, amount
         temp.add(String.valueOf(this.getId()));
         temp.add(this.getDateTimeString());
-        temp.add(EntitiesConfig.getTransactionType(this.getTransactionType()));
+        temp.add(this.getTransactionType().toString());
         if(this.getFromAccount() == null) temp.add(" ");
         else temp.add(String.valueOf(this.getFromAccount().getId()));
         if(this.getToAccount() == null) temp.add(" ");
         else temp.add(String.valueOf(this.getToAccount().getId()));
-        temp.add(EntitiesConfig.getCurrencyType(this.getCurrency()));
+        temp.add(this.getTransactionType().toString());
         temp.add(String.valueOf(this.getAmount()));
         return temp;
     }

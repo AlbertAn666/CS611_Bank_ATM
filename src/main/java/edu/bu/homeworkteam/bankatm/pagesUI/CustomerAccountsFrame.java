@@ -15,13 +15,14 @@ import java.util.Vector;
  *  frame for the admin to check the account of the customer
  */
 public class CustomerAccountsFrame extends JFrame {
-    int selectedAccount = 0;
+    private int selectedAccount = 0;
     ManagerService managerService;
     JPanel panel = new JPanel();
     JTable accountTable = new JTable();
     Vector<String> column = new Vector<>();
     JButton selectButton = new JButton("Check account info");
-    JButton checkButton = new JButton("Check his transactions");
+    JButton checkAccountButton = new JButton("Check his transactions");
+    JButton checkLoanButton = new JButton("Check his loans");
 
 
     public CustomerAccountsFrame(Vector<Vector<String>> data, int customerId) {
@@ -35,13 +36,15 @@ public class CustomerAccountsFrame extends JFrame {
         ListSelectionModel selectionModel = accountTable.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        setSize(600, 300);
-        accountTable.setBounds(10, 10, 880, 900);
-        selectButton.setBounds(100,  1000, 100, 80);
-        checkButton.setBounds(400, 1000, 100, 80);
-        panel.add(accountTable);
-        panel.add(checkButton);
+        setSize(600, 600);
+//        accountTable.setBounds(10, 10, 880, 900);
+//        selectButton.setBounds(100,  1000, 100, 80);
+//        checkButton.setBounds(400, 1000, 100, 80);
+        JScrollPane pane = new JScrollPane(accountTable);
+        panel.add(pane);
+        panel.add(checkAccountButton);
         panel.add(selectButton);
+        panel.add(checkLoanButton);
         add(panel);
 
         selectionModel.addListSelectionListener(new ListSelectionListener() {
@@ -73,12 +76,21 @@ public class CustomerAccountsFrame extends JFrame {
             }
         });
 
-        checkButton.addActionListener(new ActionListener() {
+        checkAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Vector<Vector<String>> data = managerService.checkUpTransactions(customerId);
                 ShowTransactionFrame showTransactionFrame = new ShowTransactionFrame(data);
                 showTransactionFrame.setVisible(true);
+            }
+        });
+
+        checkLoanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Vector<Vector<String>> data = managerService.checkUpCustomerLoans(customerId);
+                ShowLoanFrame showLoanFrame = new ShowLoanFrame(data);
+                showLoanFrame.setVisible(true);
             }
         });
 

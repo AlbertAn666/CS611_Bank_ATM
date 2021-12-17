@@ -28,9 +28,22 @@ public class ManagerService {
     AccountRepository accountRepository;
     @Autowired
     TransactionRepository transactionRepository;
-    //@Autowired
-    //LoanRepository loanRepository;
 
+
+    public int chargeInterest() {
+        Iterable<Customer> customers = GuiManager.getInstance().getCustomerRepository().findAll();
+        for(Customer customer: customers) {
+            Map<Currency, Float> loan = customer.getLoans();
+            for(Currency currency: loan.keySet()) {
+                float loanOfCur = loan.get(currency);
+                loanOfCur += loanOfCur * 0.05;
+                loan.put(currency, loanOfCur);
+            }
+            customer.setLoans(loan);
+            GuiManager.getInstance().getCustomerRepository().save(customer);
+        }
+        return ServiceConfig.OK;
+    }
 
     public int payInterest() {
         Iterable<Account> accounts = GuiManager.getInstance().getAccountRepository().findAll();
@@ -41,28 +54,16 @@ public class ManagerService {
                     float balance = 0;
                     if(currentBalances.containsKey(currency))
                         balance = currentBalances.get(currency);
-                    if(balance >= 10000)
+                    if(balance >= 1000)
                         balance += balance * 0.03;
                     currentBalances.put(currency, balance);
                 }
                 account.setBalances(currentBalances);
             }
-            int accountId = account.getId();
-            accountRepository.deleteById(accountId);
-            accountRepository.save(account);
+            GuiManager.getInstance().getAccountRepository().save(account);
         }
         return ServiceConfig.OK;
     }
-
-//    public int chargeInterest() {
-//        Iterable<Loan> loans = loanRepository.findAll();
-//        for(Loan loan: loans) {
-//            float currentMoney = loan.getAmount();
-//            currentMoney += currentMoney * 0.05;
-//            loan.setAmount(currentMoney);
-//        }
-//        return ServiceConfig.OK;
-//    }
 
     public Customer getCustomer(int customerId) {
         Optional<Customer> optionalCustomer = GuiManager.getInstance().getCustomerRepository().findById(customerId);
@@ -75,6 +76,21 @@ public class ManagerService {
         List<Transaction> transactions = GuiManager.getInstance().getTransactionRepository().getTransactionsByCustomerId(customerId);
         for(Transaction transaction: transactions) {
             Vector<String> temp = transaction.getTransaction();
+            ret.add(temp);
+        }
+        return ret;
+    }
+
+    public Vector<Vector<String>> checkUpCustomerLoans(int customerId) {
+        Vector<Vector<String>> ret = new Vector<>();
+        Customer customer = getCustomer(customerId);
+        if(customer == null) return null;
+        Map<Currency, Float> loans = customer.getLoans();
+        for (Currency currency : loans.keySet()) {
+            Vector<String> temp = new Vector<>();
+            temp.add(currency.toString());
+            temp.add(String.valueOf(loans.get(currency)));
+
             ret.add(temp);
         }
         return ret;
@@ -106,7 +122,7 @@ public class ManagerService {
             System.out.println(account.getId());
             Vector<String> accountInfo = new Vector<>();
             accountInfo.add(String.valueOf(account.getId()));
-            accountInfo.add(EntitiesConfig.getAccountType(account.getAccountType()));
+            accountInfo.add(account.getAccountType().toString());
 
             ret.add(accountInfo);
         }
@@ -120,21 +136,24 @@ public class ManagerService {
         return account.getAccountBalances();
     }
 
-    public Vector<Vector<String>> checkUpTodayTransactions() {
+    public Vector<Vector<String>> checkUpDailyTransactions(String date) {
         Vector<Vector<String>> ret = new Vector<>();
-        SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
-        String todayDate = dateFmt.format(new Date());
         Iterable<Transaction> transactions = GuiManager.getInstance().getTransactionRepository().findAll();
-        System.out.println("Here");
         for(Transaction transaction: transactions) {
-            Vector<String> transactionInfo = new Vector<>();
             // Tag:
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.of("America/New_York"));
             String transDate = dateTimeFormatter.format(transaction.getInstant());
-            if(todayDate.equals(transDate)) {
+            if(date.equals(transDate)) {
                 ret.add(transaction.getTransaction());
             }
         }
         return ret;
+    }
+
+    public Vector<Vector<String>> checkUpTodayTransactions() {
+        Vector<Vector<String>> ret = new Vector<>();
+        SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
+        String todayDate = dateFmt.format(new Date());
+        return checkUpDailyTransactions(todayDate);
     }
 }
