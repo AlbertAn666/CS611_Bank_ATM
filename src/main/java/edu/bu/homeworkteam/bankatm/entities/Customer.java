@@ -26,6 +26,12 @@ public class Customer {
     private String password;
 
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    //@CollectionTable(name = "customer_balances")
+    @MapKeyColumn(name = "currency")
+    @Column(name ="loan")
+    private Map<Currency, Float> loans= new HashMap<>(); //key: currency; value: loan;
+
 
 
 //    private float totalStockProfit;  // newly added

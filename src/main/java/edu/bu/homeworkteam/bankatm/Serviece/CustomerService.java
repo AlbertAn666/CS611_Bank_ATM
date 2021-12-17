@@ -2,6 +2,7 @@ package edu.bu.homeworkteam.bankatm.Serviece;
 
 import edu.bu.homeworkteam.bankatm.entities.*;
 import edu.bu.homeworkteam.bankatm.entities.Currency;
+import edu.bu.homeworkteam.bankatm.pagesUI.GuiManager;
 import edu.bu.homeworkteam.bankatm.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -57,6 +58,8 @@ public class CustomerService {
         customerRepository.save(customer);
         return account.getId();
     }
+
+
 
     public int deleteAccount(int customerId, int accountId) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
@@ -232,10 +235,30 @@ public class CustomerService {
         account.getBalances().put(currency,originalBalance+value);
         accountRepository.save(account);
 
+        updateLoansAfterCollateralChange(customer);
+
         return new ServiceResult(true,"");
     }
 
 
+    public void updateLoansAfterCollateralChange(Customer customer){
+        List<Collateral> collateralList= collateralRepository.getByCustomerId(customer.getId());
+        Map<Currency, Float> loans= new HashMap<>();
+        for (Collateral collateral:collateralList
+        ) {
+            Float loan=loans.get(collateral.getCurrency());
+            if(loan==null){
+                loans.put(collateral.getCurrency(),collateral.getValue());
+            }else{
+                float newLoan=loan+collateral.getValue();
+                loans.put(collateral.getCurrency(),newLoan);
+
+            }
+        }
+
+        customer.setLoans(loans);
+        customerRepository.save(customer);
+    }
 
     public ServiceResult removeCollateral(int customerId, int collateralId, int accountId) {
         // set collateral attribute
@@ -278,6 +301,8 @@ public class CustomerService {
         account.getBalances().put(collateral.getCurrency(),newBalance);
         accountRepository.save(account);
         collateralRepository.delete(collateral);
+
+        updateLoansAfterCollateralChange(customer);
 
         return new ServiceResult(true,"");
     }
