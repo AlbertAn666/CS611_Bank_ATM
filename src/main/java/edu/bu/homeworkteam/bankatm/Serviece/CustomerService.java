@@ -23,27 +23,29 @@ public class CustomerService {
     //@Autowired
     //CollateralRepository collateralRepository;
 
-//    public int createAccount(int customerId, AccountType accountType, float deposit) {
-//        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
-//        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
-//        Customer customer = optionalCustomer.get();
-//
-//        if(deposit < ServiceConfig.ACCOUNT_FEE) {
-//            System.out.println("Deposit not enough for open an account");
-//            return ServiceConfig.NOT_ENOUGH_MONEY;
-//        }
-//        Account account = accountRepository.create();
-//        account.setCustomer(customer);
+    public int createAccount(int customerId, AccountType accountType
+       //     , float deposit
+    ) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
+        Customer customer = optionalCustomer.get();
+
+/*        if(deposit < ServiceConfig.ACCOUNT_FEE) {
+            System.out.println("Deposit not enough for open an account");
+            return ServiceConfig.NOT_ENOUGH_MONEY;
+        }*/
+        Account account = accountRepository.create();
+        account.setCustomer(customer);
 //        account.getBalances().put(Currency.USD, deposit - ServiceConfig.ACCOUNT_FEE);
-//        account.setAccountType(accountType);
-//        accountRepository.save(account);
-//        customer.getAccounts().add(account);
+        account.setAccountType(accountType);
+        accountRepository.save(account);
+        customer.getAccounts().add(account);
 //        if(accountType.equals(AccountType.SECURITIES)) {
 //            customer.setSecAccount(account);
 //        }
-//        customerRepository.save(customer);
-//        return account.getId();
-//    }
+        customerRepository.save(customer);
+        return account.getId();
+    }
 
     public int deleteAccount(int customerId, int accountId) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
@@ -141,25 +143,25 @@ public class CustomerService {
         return ServiceConfig.ACCOUNT_ERROR;
     }
 
-    public int transferMoney(int fromAccount, int toAccount, int customerId, Currency type, float value, String note) {
+    public int transferMoney(int fromAccountId, int toAccountId, int customerId, Currency currency, float value, String note) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
         Customer customer = optionalCustomer.get();
 
-        Optional<Account> optionalAccount1 = accountRepository.findById(fromAccount);
-        if(optionalAccount1.isPresent()) {
-            Account account = optionalAccount1.get();
-            Optional<Account> optionalAccount2 = accountRepository.findById(toAccount);
-            if(optionalAccount2.isEmpty()) return ServiceConfig.ACCOUNT_ERROR;
-            Account account2 = optionalAccount2.get();
-            if(account.getCustomer().getId() != customer.getId()) {
+        Optional<Account> optionalFromAccount = accountRepository.findById(fromAccountId);
+        if(optionalFromAccount.isPresent()) {
+            Account fromAccount = optionalFromAccount.get();
+            Optional<Account> optionalToAccount = accountRepository.findById(toAccountId);
+            if(optionalToAccount.isEmpty()) return ServiceConfig.ACCOUNT_ERROR;
+            Account toAccount = optionalToAccount.get();
+            if(fromAccount.getCustomer().getId() != customer.getId()) {
                 System.out.println("Account Id error.");
                 return ServiceConfig.ACCOUNT_ERROR;
             }
 
             float currentMoney = 0;
-            if(account.getBalances().containsKey(type))
-                currentMoney = account.getBalances().get(type);
+            if(fromAccount.getBalances().containsKey(currency))
+                currentMoney = fromAccount.getBalances().get(currency);
             if(currentMoney < value) {
                 System.out.println("Balance is not enough.");
                 return ServiceConfig.NOT_ENOUGH_MONEY;
@@ -167,23 +169,26 @@ public class CustomerService {
 
             // add a transaction record
             Transaction newTransaction = transactionRepository.create();
-            newTransaction.setFromAccount(account);
-            newTransaction.setToAccount(account2);
+            newTransaction.setFromAccount(fromAccount);
+            newTransaction.setToAccount(toAccount);
             newTransaction.setNote(note);
-            newTransaction.setCurrency(type);
+            newTransaction.setCurrency(currency);
             newTransaction.setAmount(value);
             newTransaction.setTransactionType(TransactionType.TRANSFER);
             newTransaction.setInstant(Instant.now());
             transactionRepository.save(newTransaction);
 
+
+            fromAccount.getBalances().put(currency, currentMoney - value);
+            accountRepository.save(fromAccount);
+
             // set the new balance
             float currentMoney2 = 0;
-            if(account.getBalances().containsKey(type))
-                currentMoney2 = account2.getBalances().get(type);
-            account.getBalances().put(type, currentMoney - value);
-            accountRepository.save(account);
-            account2.getBalances().put(type, currentMoney2 + value);
-            accountRepository.save(account2);
+            if(toAccount.getBalances().containsKey(currency)) {
+                currentMoney2 = toAccount.getBalances().get(currency);
+            }
+            toAccount.getBalances().put(currency, currentMoney2 + value);
+            accountRepository.save(toAccount);
             
             return ServiceConfig.OK;
         }
