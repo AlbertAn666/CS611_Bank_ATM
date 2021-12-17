@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
+ * The frame for customer to transfer money
  * @author gung
  */
 public class TransferFrame extends JFrame {

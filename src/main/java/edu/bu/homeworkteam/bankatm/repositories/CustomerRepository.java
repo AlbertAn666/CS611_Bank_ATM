@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 
 /**
  * Customer repository
+ * deals with the data access and storage of customers
  * @author gung
  */
 @Component

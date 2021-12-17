@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
+ * the frame for log in
  * @author gung
  */
 

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ *  the login and register service logic for customer and admin(manager)
+ */
 @Service
 public class LoginService {
     @Autowired

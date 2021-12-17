@@ -1,5 +1,8 @@
 package edu.bu.homeworkteam.bankatm.Serviece;
 
+/**
+ *  configurations of services
+ */
 public class ServiceConfig {
     public static final int OK = 0;
     public static final int ACCOUNT_ERROR = -1;

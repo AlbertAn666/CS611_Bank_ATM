@@ -5,6 +5,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Vector;
 
+/**
+ * Frame to show the account information
+ */
 public class AccountInfoFrame extends JFrame {
     JPanel panel = new JPanel();
     JTable table = new JTable();

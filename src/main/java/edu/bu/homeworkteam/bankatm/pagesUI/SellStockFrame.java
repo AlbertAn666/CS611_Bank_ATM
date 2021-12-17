@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * The frame for customer to sell stocks
  * @author gung
  */
 public class SellStockFrame extends JFrame {

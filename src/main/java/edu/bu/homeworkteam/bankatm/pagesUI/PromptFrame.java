@@ -8,6 +8,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
+ * shows the messages
  * @author gung
  */
 public class PromptFrame extends JFrame {

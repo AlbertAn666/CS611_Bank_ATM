@@ -8,6 +8,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
+ * frame for customer to borrow loan
  * @author gung
  */
 public class BorrowLoanFrame extends JFrame {

@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+/**
+ * the frame for the admin to operate with stocks
+ */
 public class StockMarketFrame extends JFrame {
     /*
     ManagerStockService managerStockService;

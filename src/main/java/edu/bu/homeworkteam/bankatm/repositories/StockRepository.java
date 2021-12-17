@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Stock repository
+ * Stock repository,deals with the data access and storage of stocks
  * @author gung
  */
 @Repository

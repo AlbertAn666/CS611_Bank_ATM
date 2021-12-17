@@ -55,9 +55,9 @@ public class Transaction {
         temp.add(this.getDateTimeString());
         temp.add(EntitiesConfig.getTransactionType(this.getTransactionType()));
         if(this.getFromAccount() == null) temp.add(" ");
-        else temp.add(String.valueOf(this.getFromAccount()));
+        else temp.add(String.valueOf(this.getFromAccount().getId()));
         if(this.getToAccount() == null) temp.add(" ");
-        else temp.add(String.valueOf(this.getToAccount()));
+        else temp.add(String.valueOf(this.getToAccount().getId()));
         temp.add(EntitiesConfig.getCurrencyType(this.getCurrency()));
         temp.add(String.valueOf(this.getAmount()));
         return temp;

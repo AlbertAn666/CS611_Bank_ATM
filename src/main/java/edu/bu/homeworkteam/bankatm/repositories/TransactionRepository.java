@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * transaction repository, deals with the data access and storage of transactions
  * @author gung
  */
 @Repository

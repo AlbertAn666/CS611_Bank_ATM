@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Account repository
+ * Account repository, deals with the data access and storage of accounts
  * @author gung
  *
  */

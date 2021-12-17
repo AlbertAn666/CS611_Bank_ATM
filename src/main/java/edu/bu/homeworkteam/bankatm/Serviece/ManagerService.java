@@ -16,6 +16,10 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * the manager bank service logic, including pay interests and charge interest,
+ * show information of customers, show transactions information, etc.
+ */
 @Component
 public class ManagerService {
     @Autowired
@@ -121,6 +125,7 @@ public class ManagerService {
         SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = dateFmt.format(new Date());
         Iterable<Transaction> transactions = GuiManager.getInstance().getTransactionRepository().findAll();
+        System.out.println("Here");
         for(Transaction transaction: transactions) {
             Vector<String> transactionInfo = new Vector<>();
             // Tag:
