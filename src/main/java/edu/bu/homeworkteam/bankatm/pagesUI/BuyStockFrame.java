@@ -4,7 +4,11 @@
 
 package edu.bu.homeworkteam.bankatm.pagesUI;
 
+import edu.bu.homeworkteam.bankatm.Serviece.ServiceResult;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
@@ -12,42 +16,82 @@ import javax.swing.*;
  * @author gung
  */
 public class BuyStockFrame extends JFrame {
+
+
+    private ViewStocksFrame viewStocksFrame;
+    public void setViewStocksFrame(ViewStocksFrame viewStocksFrame){
+        this.viewStocksFrame=viewStocksFrame;
+    }
     public BuyStockFrame() {
         initComponents();
+
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+                ServiceResult serviceResult=null;
+                try {
+
+                    int stockId=Integer.parseInt(stockIdField.getText());
+                    int numberOfShares=Integer.parseInt(numberField.getText());
+
+
+                    int customerId = GuiManager.getInstance().getLoggedInCustomerId();
+
+                    serviceResult=GuiManager.getInstance().getCustomerStockService().buyStock(customerId,stockId,numberOfShares);
+
+                }catch (Exception e){
+
+                }
+
+                if(serviceResult==null){
+                    new PromptFrame("Buying failed. Please check and try again.");
+                }else if(serviceResult.isSuccessful()){
+                    new PromptFrame("Buying successful.");
+                    viewStocksFrame.refresh();
+                    dispose();
+                }else{
+                    new PromptFrame(serviceResult.getMessage());
+                }
+            }
+        });
+
     }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - unknown
-        textField1 = new JTextField();
+        stockIdField = new JTextField();
         label1 = new JLabel();
-        textField2 = new JTextField();
+        numberField = new JTextField();
         label2 = new JLabel();
-        button1 = new JButton();
+        button = new JButton();
 
         //======== this ========
         setTitle("Buy Stock");
+        setVisible(true);
         var contentPane = getContentPane();
         contentPane.setLayout(null);
-        contentPane.add(textField1);
-        textField1.setBounds(145, 75, 315, textField1.getPreferredSize().height);
+        contentPane.add(stockIdField);
+        stockIdField.setBounds(145, 75, 315, stockIdField.getPreferredSize().height);
 
         //---- label1 ----
         label1.setText("Stock ID");
         contentPane.add(label1);
         label1.setBounds(new Rectangle(new Point(25, 80), label1.getPreferredSize()));
-        contentPane.add(textField2);
-        textField2.setBounds(145, 115, 315, 26);
+        contentPane.add(numberField);
+        numberField.setBounds(145, 115, 315, 26);
 
         //---- label2 ----
         label2.setText("Number of shares");
         contentPane.add(label2);
         label2.setBounds(25, 120, 125, 16);
 
-        //---- button1 ----
-        button1.setText("Buy stock");
-        contentPane.add(button1);
-        button1.setBounds(355, 205, 107, button1.getPreferredSize().height);
+        //---- button ----
+        button.setText("Buy stock");
+        contentPane.add(button);
+        button.setBounds(355, 205, 107, button.getPreferredSize().height);
 
         {
             // compute preferred size
@@ -70,10 +114,10 @@ public class BuyStockFrame extends JFrame {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     // Generated using JFormDesigner Evaluation license - unknown
-    private JTextField textField1;
+    private JTextField stockIdField;
     private JLabel label1;
-    private JTextField textField2;
+    private JTextField numberField;
     private JLabel label2;
-    private JButton button1;
+    private JButton button;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

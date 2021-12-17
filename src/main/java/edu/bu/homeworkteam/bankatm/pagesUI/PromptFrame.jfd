@@ -12,9 +12,9 @@ new FormModel {
 				name: "label"
 				"text": "text"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 45
+				"x": 10
 				"y": 10
-				"width": 300
+				"width": 405
 				"height": 80
 			} )
 		}, new FormLayoutConstraints( null ) {

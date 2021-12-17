@@ -8,6 +8,7 @@ new FormModel {
 		} ) {
 			name: "this"
 			"title": "Stocks"
+			"visible": true
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label1"
 				"text": "Stocks in markets"
@@ -46,15 +47,6 @@ new FormModel {
 				"x": 305
 				"y": 10
 			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "stockInfoField"
-				"background": new com.jformdesigner.model.SwingColor( "CheckBox.background" )
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 305
-				"y": 315
-				"width": 575
-				"height": 215
-			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "buyStockButton"
 				"text": "Buy stock"
@@ -71,6 +63,21 @@ new FormModel {
 				"height": 29
 				"x": 700
 				"y": 565
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane1"
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "stockInfoArea"
+					"editable": false
+					"background": new com.jformdesigner.model.SwingColor( "Button.background" )
+					"lineWrap": true
+					"wrapStyleWord": true
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 310
+				"y": 315
+				"width": 570
+				"height": 230
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 95, 0 )

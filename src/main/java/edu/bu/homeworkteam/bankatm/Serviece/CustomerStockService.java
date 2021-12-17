@@ -143,10 +143,106 @@ public class CustomerStockService extends CustomerService {
 //    }
 
 
+
+
+    public ServiceResult buyStock(int customerId, int stockId, int numberOfShares){
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        Customer customer = optionalCustomer.get();
+        Account securitiesAccount=customer.getSecuritiesAccount();
+        if(securitiesAccount==null){
+            return new ServiceResult(false,"You don't have a securities account");
+        }
+
+        Optional<Stock> optionalStock=stockRepository.findById(stockId);
+        if(optionalStock.isEmpty()){
+            return new ServiceResult(false, "We cannot find this stock");
+        }
+        Stock stock=optionalStock.get();
+
+        Map<Stock,Shareholding> stockShareholdings=customer.getShareholdings();
+        Shareholding shareholding=stockShareholdings.get(stock);
+        if(shareholding==null) {
+            shareholding=new Shareholding();
+            shareholding.setNumberOfShares(0);
+            shareholding.setAverageCostPricePerShare(0);
+        }
+
+
+
+        Float balance=securitiesAccount.getBalances().get(stock.getCurrency());
+        if(balance==null){
+            return new ServiceResult(false,"You don't have currency "+stock.getCurrency());
+        }
+
+        float costAmount=numberOfShares*stock.getPrice();
+        if(balance<costAmount){
+            return new ServiceResult(false,"You don't have enough money");
+        }
+
+        balance=balance-costAmount;
+        securitiesAccount.getBalances().put(stock.getCurrency(),balance);
+        int newNumberOfShares=shareholding.getNumberOfShares()+numberOfShares;
+        float newAveragePrice=(shareholding.getAverageCostPricePerShare()*shareholding.getNumberOfShares()+costAmount)/newNumberOfShares;
+        shareholding.setNumberOfShares(newNumberOfShares);
+        shareholding.setAverageCostPricePerShare(newAveragePrice);
+        stockShareholdings.put(stock,shareholding);
+
+        accountRepository.save(securitiesAccount);
+        customerRepository.save(customer);
+
+        return new ServiceResult(true,"");
+    }
+
+    public ServiceResult sellStock(int customerId, int stockId, int numberOfShares){
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        Customer customer = optionalCustomer.get();
+        Account securitiesAccount=customer.getSecuritiesAccount();
+        if(securitiesAccount==null){
+            return new ServiceResult(false,"You don't have a securities account");
+        }
+
+        Optional<Stock> optionalStock=stockRepository.findById(stockId);
+        if(optionalStock.isEmpty()){
+            return new ServiceResult(false, "We cannot find this stock");
+        }
+        Stock stock=optionalStock.get();
+
+        Map<Stock,Shareholding> stockShareholdings=customer.getShareholdings();
+        Shareholding shareholding=stockShareholdings.get(stock);
+        if(shareholding==null){
+            return new ServiceResult(false, "You don't have this stock.");
+        }
+
+        if(shareholding.getNumberOfShares()<numberOfShares){
+            return new ServiceResult(false, "You don't have enough number of shares.");
+        }
+
+        shareholding.setNumberOfShares(shareholding.getNumberOfShares()-numberOfShares);
+
+        Float balance=securitiesAccount.getBalances().get(stock.getCurrency());
+        if(balance!=null){
+            balance=balance+numberOfShares*stock.getPrice();
+        }else{
+            balance=numberOfShares*stock.getPrice();
+        }
+        securitiesAccount.getBalances().put(stock.getCurrency(),balance);
+
+        float benefit=numberOfShares*(stock.getPrice()-shareholding.getAverageCostPricePerShare());
+        float income=numberOfShares*stock.getPrice();
+
+        accountRepository.save(securitiesAccount);
+        customerRepository.save(customer);
+
+        return new ServiceResult(true,"Your income is "+income+". Your benefit is "+benefit+". ");
+    }
+
+//
 //    public int sellStockBySymbol(int customerId, String symbol, int n) {
 //        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
 //        if (optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;
 //        Customer customer = optionalCustomer.get();
+//
+//
 //        Map<Stock, Shareholding> stockMap = customer.getShareholdings();
 //        float averageBuyingPrice = -1;
 //        int totalNumberOfStocks = 0;
@@ -180,6 +276,9 @@ public class CustomerStockService extends CustomerService {
 //        return ServiceConfig.OK;
 //    }
 //
+
+
+
 //    public float getOpenPosition(int customerId) {
 //        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
 //        if (optionalCustomer.isEmpty()) return ServiceConfig.CUSTOMER_ERROR;

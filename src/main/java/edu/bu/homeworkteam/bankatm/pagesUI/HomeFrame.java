@@ -25,6 +25,20 @@ public class HomeFrame extends JFrame {
     public HomeFrame(){
         initComponents();
 
+//        sellStockMenuItem.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent actionEvent) {
+//                new SellStockFrame();
+//            }
+//        });
+//
+//        buyStockMenuItem.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent actionEvent) {
+//                new BuyStockFrame();
+//            }
+//        });
+
         refreshMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -60,6 +74,13 @@ public class HomeFrame extends JFrame {
             }
         });
 
+        viewStocksMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                openViewStocksFrame();
+            }
+        });
+
         accountJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         accountJList.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -92,6 +113,9 @@ public class HomeFrame extends JFrame {
     }
 
 
+    private void openViewStocksFrame(){
+        new ViewStocksFrame().setHomeFrame(this);
+    }
     private void openTransferFrame(){
         new TransferFrame().setHomeFrame(this);
     }

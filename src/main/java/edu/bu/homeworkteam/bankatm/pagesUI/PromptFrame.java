@@ -34,7 +34,7 @@ public class PromptFrame extends JFrame {
         //---- label ----
         label.setText("text");
         contentPane.add(label);
-        label.setBounds(45, 10, 300, 80);
+        label.setBounds(10, 10, 405, 80);
 
         contentPane.setPreferredSize(new Dimension(430, 135));
         pack();

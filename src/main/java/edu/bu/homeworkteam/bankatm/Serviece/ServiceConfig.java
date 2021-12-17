@@ -21,4 +21,5 @@ public class ServiceConfig {
 
     public static final float ACCOUNT_FEE = 20;  // Fee for open or delete an account
     public static final float STOCK_REQUIRE = 5000;  // Minimum requirement of saving account for stock
+    public static final int SECURITIES_EXIST=23123;
 }

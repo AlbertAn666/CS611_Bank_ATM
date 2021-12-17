@@ -24,6 +24,10 @@ public class Customer {
     private int id; // auto-generated, unique, unchangeable. e.g. 23442
     private String name; // not always unique. e.g. “Sam”
     private String password;
+
+
+
+
 //    private float totalStockProfit;  // newly added
 //    @OneToOne
 //    private Account secAccount; // newly added
@@ -58,6 +62,10 @@ public class Customer {
 
     private List<Account> accounts=new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
+    @Fetch(FetchMode.SELECT) //avoid duplicates
+    private List<Collateral> collateralList=new ArrayList<>();
+
     //@OneToMany(fetch = FetchType.EAGER)
     //private List<Collateral> collaterals = new ArrayList<>();
 
@@ -84,6 +92,20 @@ public class Customer {
     findById
     Hibernate: select customer0_.id as id1_2_0_, customer0_.name as name2_2_0_, customer0_.password as password3_2_0_ from customer customer0_ where customer0_.id=?
      */
+
+
+
+    public Account getSecuritiesAccount(){
+        Account result=null;
+        for (Account account :
+                accounts) {
+            if(account.getAccountType()==AccountType.SECURITIES){
+                result=account;
+            }
+        }
+
+        return result;
+    }
 }
 
 

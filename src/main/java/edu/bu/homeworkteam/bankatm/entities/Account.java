@@ -35,6 +35,9 @@ public class Account {
 
     private AccountType accountType; //
 
+
+
+
     public Vector<Vector<String>> getAccountBalances() {
         Vector<Vector<String>> ret = new Vector<>();
         Map<Currency, Float> balances = this.getBalances();

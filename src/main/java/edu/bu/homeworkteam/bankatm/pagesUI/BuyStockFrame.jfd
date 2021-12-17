@@ -6,8 +6,9 @@ new FormModel {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
 			name: "this"
 			"title": "Buy Stock"
+			"visible": true
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField1"
+				name: "stockIdField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 145
 				"y": 75
@@ -21,7 +22,7 @@ new FormModel {
 				"y": 80
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField2"
+				name: "numberField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"width": 315
 				"height": 26
@@ -38,7 +39,7 @@ new FormModel {
 				"y": 120
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button1"
+				name: "button"
 				"text": "Buy stock"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 355

@@ -38,6 +38,12 @@ public class CustomerService {
             System.out.println("Deposit not enough for open an account");
             return ServiceConfig.NOT_ENOUGH_MONEY;
         }*/
+
+
+        if(accountType==AccountType.SECURITIES&&customer.getSecuritiesAccount()!=null){
+            return ServiceConfig.SECURITIES_EXIST;
+        }
+
         Account account = accountRepository.create();
         account.setCustomer(customer);
 //        account.getBalances().put(Currency.USD, deposit - ServiceConfig.ACCOUNT_FEE);
@@ -47,6 +53,7 @@ public class CustomerService {
 //        if(accountType.equals(AccountType.SECURITIES)) {
 //            customer.setSecAccount(account);
 //        }
+
         customerRepository.save(customer);
         return account.getId();
     }
